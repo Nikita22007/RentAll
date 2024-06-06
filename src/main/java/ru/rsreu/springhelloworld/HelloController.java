@@ -7,7 +7,7 @@ import java.util.*;
 public class HelloController {
     private int _id = 1;
 
-    private List<Map<String, String>> _data = new ArrayList<>() {{
+    private final List<Map<String, String>> _data = new ArrayList<>() {{
         add(
             new HashMap<>() {{
                 put("id", "1");
