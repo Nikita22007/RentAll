@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 public class TestEntityServiceImpl implements TestEntityService {
-    @Autowired
-    private TestEntityRepository testEntityRepository;
+    private final TestEntityRepository testEntityRepository;
+
+    public TestEntityServiceImpl(TestEntityRepository testEntityRepository) {
+        this.testEntityRepository = testEntityRepository;
+    }
 
     @Override
     public List<TestEntity> getAll() {

@@ -11,8 +11,12 @@ import java.util.*;
 
 @RestController
 public class MainController {
-    @Autowired
-    private TestEntityService testEntityService;
+    private final TestEntityService testEntityService;
+
+    public MainController(TestEntityService testEntityService) {
+        this.testEntityService = testEntityService;
+    }
+
     @GetMapping("/")
     public List<TestEntity> getTable() {
         return testEntityService.getAll();
