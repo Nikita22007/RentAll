@@ -2,30 +2,16 @@ package ru.rsreu.rentall.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
 @Entity(name = "categories")
+@Getter @Setter @NoArgsConstructor
 public class Category {
     @Id
     private int catId;
     private String catName;
-
-    public Category() {}
-
-    public int getCatId() {
-        return catId;
-    }
-
-    public void setCatId(int catId) {
-        this.catId = catId;
-    }
-
-    public String getCatName() {
-        return catName;
-    }
-
-    public void setCatName(String catName) {
-        this.catName = catName;
-    }
 }
