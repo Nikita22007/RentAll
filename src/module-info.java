@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * @author coolg
+ *
+ */
+module RentAll {
+}

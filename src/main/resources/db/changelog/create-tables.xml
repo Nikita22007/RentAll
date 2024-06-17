@@ -5,7 +5,7 @@
                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet author="killreal" id="v1-create-images">
-        <createTable tableName="Images">
+        <createTable tableName="images">
             <column name="img_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
@@ -16,7 +16,7 @@
     </changeSet>
 
     <changeSet author="killreal" id="v1-create-users">
-        <createTable tableName="Users">
+        <createTable tableName="users">
             <column name="user_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
@@ -42,45 +42,45 @@
     </changeSet>
 
     <changeSet author="killreal" id="v1-create-user-reviews">
-        <createTable tableName="User_reviews">
+        <createTable tableName="user_reviews">
             <column name="rev_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
             <column name="user_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_user_id" references='"Users"(user_id)'/>
+                <constraints nullable="false" foreignKeyName="fk_user_id" references='"users"(user_id)'/>
             </column>
             <column name="target_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_target_id" references='"Users"(user_id)'/>
+                <constraints nullable="false" foreignKeyName="fk_target_id" references='"users"(user_id)'/>
             </column>
             <column name="feedback" type="INT"/>
         </createTable>
     </changeSet>
 
     <changeSet author="killreal" id="v1-create-chats">
-        <createTable tableName="Chats">
+        <createTable tableName="chats">
             <column name="chat_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="user_1_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_user_1_id" references='"Users"(user_id)'/>
+            <column name="user_one_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_user_one_id" references='"users"(user_id)'/>
             </column>
-            <column name="user_2_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_user_2_id" references='"Users"(user_id)'/>
+            <column name="user_two_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_user_two_id" references='"users"(user_id)'/>
             </column>
             <column name="chat_name" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
 
     <changeSet author="killreal" id="v1-create-messages">
-        <createTable tableName="Messages">
+        <createTable tableName="messages">
             <column name="msg_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
             <column name="sender_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_sender_id" references='"Users"(user_id)'/>
+                <constraints nullable="false" foreignKeyName="fk_sender_id" references='"users"(user_id)'/>
             </column>
             <column name="getter_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_getter_id" references='"Users"(user_id)'/>
+                <constraints nullable="false" foreignKeyName="fk_getter_id" references='"users"(user_id)'/>
             </column>
             <column name="msg" type="TEXT">
                 <constraints nullable="false"/>
@@ -90,13 +90,13 @@
                 <constraints nullable="false"/>
             </column>
             <column name="chat_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_chat_id" references='"Chats"(chat_id)'/>
+                <constraints nullable="false" foreignKeyName="fk_chat_id" references='"chats"(chat_id)'/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet author="killreal" id="v1-create-categories">
-        <createTable tableName="Categories">
+        <createTable tableName="categories">
             <column name="cat_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
@@ -107,7 +107,7 @@
     </changeSet>
 
     <changeSet author="killreal" id="v1-create-advertisements">
-        <createTable tableName="Advertisements">
+        <createTable tableName="advertisements">
             <column name="adv_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
@@ -126,11 +126,11 @@
                 <constraints nullable="false"/>
             </column>
             <column name="user_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_adv_user_id" references='"Users"(user_id)'/>
+                <constraints nullable="false" foreignKeyName="fk_adv_user_id" references='"users"(user_id)'/>
             </column>
             <column name="image_id" type="INT"/>
             <column name="category_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_adv_cat_id" references='"Categories"(cat_id)'/>
+                <constraints nullable="false" foreignKeyName="fk_adv_cat_id" references='"categories"(cat_id)'/>
             </column>
             <column name="creation_time" type="TIMESTAMP">
                 <constraints nullable="false"/>
@@ -139,15 +139,15 @@
     </changeSet>
 
     <changeSet author="killreal" id="v1-create-adv-reviews">
-        <createTable tableName="Adv_Reviews">
-            <column name="rewiew_id" type="SERIAL">
+        <createTable tableName="adv_reviews">
+            <column name="review_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
             <column name="user_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_adv_rew_user_id" references='"Users"(user_id)'/>
+                <constraints nullable="false" foreignKeyName="fk_adv_rew_user_id" references='"users"(user_id)'/>
             </column>
             <column name="post_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_adv_post_id" references='"Advertisements"(adv_id)'/>
+                <constraints nullable="false" foreignKeyName="fk_adv_post_id" references='"advertisements"(adv_id)'/>
             </column>
             <column name="feedback" type="TEXT"/>
             <column name="mark" type="SMALLINT">

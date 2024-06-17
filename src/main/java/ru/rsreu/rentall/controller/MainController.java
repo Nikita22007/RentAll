@@ -1,30 +1,28 @@
 package ru.rsreu.rentall.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.rsreu.rentall.entity.TestEntity;
-import ru.rsreu.rentall.repository.TestEntityRepository;
-import ru.rsreu.rentall.service.TestEntityService;
-import ru.rsreu.rentall.service.TestEntityServiceImpl;
+import ru.rsreu.rentall.entity.AdvertisementReview;
+import ru.rsreu.rentall.entity.Message;
+import ru.rsreu.rentall.service.MessageService;
 
 import java.util.*;
 
 @RestController
 public class MainController {
-    private final TestEntityService testEntityService;
+    private final MessageService messageService;
 
-    public MainController(TestEntityService testEntityService) {
-        this.testEntityService = testEntityService;
+    public MainController(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     @GetMapping("/")
-    public List<TestEntity> getTable() {
-        return testEntityService.getAll();
+    public List<Message> getTable() {
+        return messageService.getAll();
     }
 
     @GetMapping("{id}")
-    public Optional<TestEntity> getById(@PathVariable Long id) {
-        return testEntityService.findById(id);
+    public Optional<Message> getById(@PathVariable Long id) {
+        return messageService.findById(id);
     }
 
 }
