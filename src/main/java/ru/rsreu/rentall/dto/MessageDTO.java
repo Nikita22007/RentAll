@@ -7,8 +7,8 @@ import java.sql.Timestamp;
 
 @Getter @Setter
 public class MessageDTO {
-    private int senderId;
-    private int getterId;
+    private String senderLogin;
+    private String receiverLogin;
     private String msg;
     private int imageId;
     private Timestamp sendingTime;

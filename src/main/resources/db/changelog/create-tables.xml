@@ -17,9 +17,6 @@
 
     <changeSet author="killreal" id="v1-create-users">
         <createTable tableName="users">
-            <column name="user_id" type="SERIAL">
-                <constraints primaryKey="true"/>
-            </column>
             <column name="user_full_name" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
@@ -29,8 +26,8 @@
             <column name="phone_number" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="login" type="INT">
-                <constraints nullable="false"/>
+            <column name="login" type="VARCHAR(30)">
+                <constraints primaryKey="true"/>
             </column>
             <column name="user_password" type="TEXT">
                 <constraints nullable="false"/>
@@ -46,11 +43,11 @@
             <column name="rev_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="user_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_user_id" references='"users"(user_id)'/>
+            <column name="user_login" type="VARCHAR(30)">
+                <constraints nullable="false" foreignKeyName="fk_user_login" references='"users"(login)'/>
             </column>
-            <column name="target_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_target_id" references='"users"(user_id)'/>
+            <column name="target_login" type="VARCHAR(30)">
+                <constraints nullable="false" foreignKeyName="fk_target_login" references='"users"(login)'/>
             </column>
             <column name="feedback" type="INT"/>
         </createTable>
@@ -61,11 +58,11 @@
             <column name="chat_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="user_one_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_user_one_id" references='"users"(user_id)'/>
+            <column name="user_one_login" type="VARCHAR(30)">
+                <constraints nullable="false" foreignKeyName="fk_user_one_login" references='"users"(login)'/>
             </column>
-            <column name="user_two_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_user_two_id" references='"users"(user_id)'/>
+            <column name="user_two_login" type="VARCHAR(30)">
+                <constraints nullable="false" foreignKeyName="fk_user_two_login" references='"users"(login)'/>
             </column>
             <column name="chat_name" type="VARCHAR(50)"/>
         </createTable>
@@ -76,11 +73,11 @@
             <column name="msg_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="sender_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_sender_id" references='"users"(user_id)'/>
+            <column name="sender_login" type="VARCHAR(30)">
+                <constraints nullable="false" foreignKeyName="fk_sender_login" references='"users"(login)'/>
             </column>
-            <column name="getter_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_getter_id" references='"users"(user_id)'/>
+            <column name="receiver_login" type="VARCHAR(30)">
+                <constraints nullable="false" foreignKeyName="fk_receiver_login" references='"users"(login)'/>
             </column>
             <column name="msg" type="TEXT">
                 <constraints nullable="false"/>
@@ -125,8 +122,8 @@
             <column name="adv_price" type="CHAR">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_adv_user_id" references='"users"(user_id)'/>
+            <column name="user_login" type="VARCHAR(30)">
+                <constraints nullable="false" foreignKeyName="fk_adv_user_login" references='"users"(login)'/>
             </column>
             <column name="image_id" type="INT"/>
             <column name="category_id" type="INT">
@@ -143,11 +140,11 @@
             <column name="review_id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="user_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_adv_rew_user_id" references='"users"(user_id)'/>
+            <column name="user_login" type="VARCHAR(30)">
+                <constraints nullable="false" foreignKeyName="fk_adv_rev_user_login" references='"users"(login)'/>
             </column>
-            <column name="post_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_adv_post_id" references='"advertisements"(adv_id)'/>
+            <column name="adv_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_adv_rev_adv_id" references='"advertisements"(adv_id)'/>
             </column>
             <column name="feedback" type="TEXT"/>
             <column name="mark" type="SMALLINT">

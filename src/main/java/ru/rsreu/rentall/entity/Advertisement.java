@@ -21,7 +21,7 @@ public class Advertisement {
     private int rentTime;
     private boolean isBarterAllowed;
     private String advPrice;
-    private int userId;
+    private String userLogin;
     private int imageId;
     private int categoryId;
     private Timestamp creationTime;

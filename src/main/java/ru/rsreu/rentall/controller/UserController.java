@@ -17,6 +17,7 @@ public class UserController {
 
     @PostMapping("/registrate_user")
     public ResponseEntity<Void> setUser(@RequestBody UserDTO userDTO) {
+
         userService.saveUser(userDTO);
         return ResponseEntity.status(201).build();
     }

@@ -4,6 +4,6 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <include file="create-tables.xml" relativeToChangelogFile="true" />
-    <include file="modify-login-type.xml" relativeToChangelogFile="true" />
+    <include file="modify-img-name.xml" relativeToChangelogFile="true" />
 
 </databaseChangeLog>

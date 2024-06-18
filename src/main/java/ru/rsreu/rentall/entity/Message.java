@@ -15,8 +15,8 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int msgId;
-    private int senderId;
-    private int getterId;
+    private String senderLogin;
+    private String receiverLogin;
     private String msg;
     private int imageId;
     private Timestamp sendingTime;

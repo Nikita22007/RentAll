@@ -13,7 +13,7 @@ public class UserReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int revId;
-    private int userId;
+    private String userLogin;
     private int targetId;
     private int feedback;
 }

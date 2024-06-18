@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 @Getter @Setter
 public class AdvertisementReviewDTO {
-    private int userId;
+    private String userLogin;
     private int postId;
     private String feedback;
     private int mark;

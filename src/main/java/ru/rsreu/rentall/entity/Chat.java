@@ -13,7 +13,7 @@ public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int chatId;
-    private int userOneId;
-    private int userTwoId;
+    private String userOneLogin;
+    private String userTwoLogin;
     private String chatName;
 }
