@@ -13,5 +13,5 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int imgId;
-    private byte[] catName;
+    private byte[] imgName;
 }

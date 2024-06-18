@@ -5,5 +5,5 @@ import lombok.Setter;
 
 @Getter @Setter
 public class ImageDTO {
-    private byte[] catName;
+    private byte[] imgName;
 }

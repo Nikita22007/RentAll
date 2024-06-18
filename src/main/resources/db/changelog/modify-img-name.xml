@@ -7,4 +7,20 @@
         <renameColumn tableName="images" oldColumnName="cat_name" newColumnName="img_name"/>
     </changeSet>
 
+    <changeSet id="change-chats" author="killreal">
+        <dropForeignKeyConstraint baseTableName="messages" constraintName="fk_chat_id"/>
+        <dropPrimaryKey tableName="chats" constraintName="chats_pkey"/>
+        <addPrimaryKey tableName="chats" columnNames="chat_id, user_one_login, user_two_login" constraintName="pk_id_user_one_user_two"/>
+    </changeSet>
+
+    <changeSet id="change-fk-messages" author="killreal">
+        <dropForeignKeyConstraint baseTableName="messages" constraintName="fk_receiver_login"/>
+        <dropForeignKeyConstraint baseTableName="messages" constraintName="fk_sender_login"/>
+    </changeSet>
+
+    <changeSet id="make-fk-messages" author="killreal">
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="chat_id, sender_login, receiver_login" constraintName="fk_sender_login"
+                                 referencedTableName="chats" referencedColumnNames="chat_id, user_one_login, user_two_login"/>
+    </changeSet>
+
 </databaseChangeLog>

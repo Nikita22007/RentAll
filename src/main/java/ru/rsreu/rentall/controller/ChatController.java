@@ -17,9 +17,11 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    @GetMapping("/chat_{id}")
-    public ResponseEntity<ChatDTO> getChat(@PathVariable int id) {
-        Chat chat = chatService.getChatById(id);
+    @GetMapping("/chat_{id}_{senderLogin}_{receiverLogin}")
+    public ResponseEntity<ChatDTO> getChat(@PathVariable int id,
+                                           @PathVariable String senderLogin,
+                                           @PathVariable String receiverLogin) {
+        Chat chat = chatService.getChatById(id, senderLogin, receiverLogin);
         if (chat != null) {
             return ResponseEntity.ok().body(ChatMapper.INSTANCE.toChatDTO(chat));
         }
