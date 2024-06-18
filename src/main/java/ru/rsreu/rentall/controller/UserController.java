@@ -17,9 +17,17 @@ public class UserController {
 
     @PostMapping("/registrate_user")
     public ResponseEntity<Void> setUser(@RequestBody UserDTO userDTO) {
-
-        userService.saveUser(userDTO);
-        return ResponseEntity.status(201).build();
+        if (userService.saveUser(userDTO) != null) {
+            return ResponseEntity.status(201).build();
+        }
+        return ResponseEntity.status(500).build();
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) {
+        if (userService.logInUser(userDTO) != null) {
+            return ResponseEntity.status(200).body(userDTO);
+        }
+        return ResponseEntity.status(500).build();
+    }
 }
