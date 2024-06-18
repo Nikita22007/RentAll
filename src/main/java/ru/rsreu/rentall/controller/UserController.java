@@ -1,8 +1,10 @@
 package ru.rsreu.rentall.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.rsreu.rentall.entity.User;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import ru.rsreu.rentall.dto.UserDTO;
 import ru.rsreu.rentall.service.UserService;
 
 @RestController
@@ -14,8 +16,8 @@ public class UserController {
     }
 
     @PostMapping("/registrate_user")
-    public ResponseEntity<Void> setUser(@RequestBody User user) {
-        userService.saveUser(user);
+    public ResponseEntity<Void> setUser(@RequestBody UserDTO userDTO) {
+        userService.saveUser(userDTO);
         return ResponseEntity.status(201).build();
     }
 
