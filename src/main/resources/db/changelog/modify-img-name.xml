@@ -6,5 +6,8 @@
     <changeSet id="change-name-img-name" author="killreal">
         <renameColumn tableName="images" oldColumnName="cat_name" newColumnName="img_name"/>
     </changeSet>
+    <changeSet id="change-data-type-adv-price" author="g3r1ch">
+        <modifyDataType tableName="advertisements" columnName="adv_price" newDataType="VARCHAR(10)"/>
+    </changeSet>
 
 </databaseChangeLog>
