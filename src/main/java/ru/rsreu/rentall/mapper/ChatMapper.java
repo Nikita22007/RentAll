@@ -5,7 +5,7 @@ import org.mapstruct.factory.Mappers;
 import ru.rsreu.rentall.dto.ChatDTO;
 import ru.rsreu.rentall.entity.Chat;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ChatMapper {
     ChatMapper INSTANCE = Mappers.getMapper(ChatMapper.class);
     ChatDTO toChatDTO(Chat chat);

@@ -10,7 +10,7 @@ public class UserDTO {
     private String userFullName;
     private String userAddress;
     private String phoneNumber;
-    private int login;
+    private String login;
     private String userPassword;
     private Timestamp creationTime;
 }
