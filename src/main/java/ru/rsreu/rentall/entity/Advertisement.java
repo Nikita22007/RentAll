@@ -3,13 +3,12 @@ package ru.rsreu.rentall.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
 
 @Entity(name = "Advertisements")
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public class Advertisement {
     @Id
     private int advId;

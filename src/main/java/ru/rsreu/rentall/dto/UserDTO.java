@@ -1,12 +1,11 @@
 package ru.rsreu.rentall.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public class UserDTO {
     private String userFullName;
     private String userAddress;

@@ -3,11 +3,10 @@ package ru.rsreu.rentall.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity(name = "chats")
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public class Chat {
     @Id
     private int chatId;
