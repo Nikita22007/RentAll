@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 public class AdvertisementDTO {
     private String advName;
     private String description;
-    private int timeUnit;
+    private String timeUnit;
     private int rentTime;
     private boolean isBarterAllowed;
     private String advPrice;

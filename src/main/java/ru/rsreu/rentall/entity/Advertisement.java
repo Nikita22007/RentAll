@@ -17,7 +17,7 @@ public class Advertisement {
     private int advId;
     private String advName;
     private String description;
-    private int timeUnit;
+    private String timeUnit;
     private int rentTime;
     private boolean isBarterAllowed;
     private String advPrice;
