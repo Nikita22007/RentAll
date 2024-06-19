@@ -21,7 +21,7 @@ public class AdvertisementController {
         return ResponseEntity.status(201).build();
     }
 
-    @GetMapping("/advertisement_{adv_id}")
+    @GetMapping("/advertisement/{adv_id}")
     public ResponseEntity<AdvertisementDTO> getAdvertisement(@PathVariable int adv_id) {
         Advertisement advertisement = advertisementService.getAdvertisementById(adv_id);
         if (advertisement != null){
@@ -30,7 +30,7 @@ public class AdvertisementController {
         return ResponseEntity.status(400).build();
     }
 
-    @DeleteMapping("/delete_advertisement_{adv_id}")
+    @DeleteMapping("/delete_advertisement/{adv_id}")
     public ResponseEntity<AdvertisementDTO> deleteAdvertisement(@PathVariable int adv_id){
         Advertisement advertisement = advertisementService.getAdvertisementById(adv_id);
         if (advertisement != null){

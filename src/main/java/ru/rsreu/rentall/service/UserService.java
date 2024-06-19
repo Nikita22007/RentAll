@@ -25,11 +25,11 @@ public class UserService {
         return null;
     }
 
-    public LoginDTO logInUser(LoginDTO loginDTO) {
+    public String logInUser(LoginDTO loginDTO) {
         Optional<User> userDB = userRepository.findById(loginDTO.getLogin());
         if (userDB.isPresent()) {
             if (loginDTO.getUserPassword().equals(userDB.get().getUserPassword())) {
-                return loginDTO;
+                return userDB.get().getUserFullName();
             }
         }
         return null;

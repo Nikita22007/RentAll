@@ -25,9 +25,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO) {
-        if (userService.logInUser(loginDTO) != null) {
-            return ResponseEntity.status(200).body(loginDTO);
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
+        String fullName = userService.logInUser(loginDTO);
+        if (fullName != null) {
+            return ResponseEntity.status(200).body(fullName);
         }
         return ResponseEntity.status(400).build();
     }
