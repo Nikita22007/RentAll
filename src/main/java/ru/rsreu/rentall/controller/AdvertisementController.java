@@ -7,6 +7,8 @@ import ru.rsreu.rentall.entity.Advertisement;
 import ru.rsreu.rentall.mapper.AdvertisementMapper;
 import ru.rsreu.rentall.service.AdvertisementService;
 
+import java.util.List;
+
 @RestController
 public class AdvertisementController {
     private final AdvertisementService advertisementService;
@@ -26,6 +28,15 @@ public class AdvertisementController {
         Advertisement advertisement = advertisementService.getAdvertisementById(adv_id);
         if (advertisement != null){
             return ResponseEntity.status(200).body(AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisement));
+        }
+        return ResponseEntity.status(400).build();
+    }
+
+    @GetMapping("/advertisement_board")
+    public ResponseEntity<List<AdvertisementDTO>> getAdvertisementBoard() {
+        List<AdvertisementDTO> advertisementDTOList = advertisementService.getAdvertisementBoard();
+        if (advertisementDTOList != null) {
+            return ResponseEntity.status(200).body(advertisementDTOList);
         }
         return ResponseEntity.status(400).build();
     }
