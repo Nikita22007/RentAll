@@ -1,12 +1,10 @@
 package ru.rsreu.rentall.service;
 
 import org.springframework.stereotype.Service;
+import ru.rsreu.rentall.dto.ImageDTO;
 import ru.rsreu.rentall.entity.Image;
-import ru.rsreu.rentall.entity.User;
+import ru.rsreu.rentall.mapper.ImageMapper;
 import ru.rsreu.rentall.repository.ImageRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ImageService {
@@ -16,11 +14,15 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public List<Image> getAll() {
-        return imageRepository.findAll();
+    public void save(Image image) {
+        imageRepository.save(image);
     }
 
-    public Optional<Image> findById(Long id) {
-        return imageRepository.findById(id);
+    public ImageDTO load(int id) {
+        Image searchedImage = imageRepository.findById((long) id).orElse(null);
+        if (searchedImage != null) {
+            return ImageMapper.INSTANCE.toImageDTO(searchedImage);
+        }
+        return null;
     }
 }

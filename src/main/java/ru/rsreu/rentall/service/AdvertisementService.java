@@ -22,12 +22,12 @@ public class AdvertisementService {
         return advertisementRepository.save(advertisement);
     }
 
-    public Advertisement getAdvertisementById(int id) {
-        return advertisementRepository.findById((long) id).orElse(null);
+    public AdvertisementDTO getAdvertisementById(int id) {
+        return AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisementRepository.findById((long) id).orElse(null));
     }
 
-    public void deleteAdvertisement(Advertisement advertisement) {
-        advertisementRepository.delete(advertisement);
+    public void deleteAdvertisement(AdvertisementDTO advertisementDTO) {
+        advertisementRepository.delete(AdvertisementMapper.INSTANCE.toAdvertisement(advertisementDTO));
     }
 
     public List<AdvertisementDTO> getAdvertisementBoard() {
