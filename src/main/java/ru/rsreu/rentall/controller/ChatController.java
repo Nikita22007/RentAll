@@ -25,7 +25,6 @@ public class ChatController {
         if (chat != null) {
             return ResponseEntity.ok().body(ChatMapper.INSTANCE.toChatDTO(chat));
         }
-        return ResponseEntity.status(500).build();
+        return ResponseEntity.status(400).build();
     }
-
 }

@@ -1,6 +1,7 @@
 package ru.rsreu.rentall.service;
 
 import org.springframework.stereotype.Service;
+import ru.rsreu.rentall.dto.LoginDTO;
 import ru.rsreu.rentall.dto.UserDTO;
 import ru.rsreu.rentall.entity.User;
 import ru.rsreu.rentall.mapper.UserMapper;
@@ -24,12 +25,11 @@ public class UserService {
         return null;
     }
 
-    public User logInUser(UserDTO userDTO) {
-        User user = UserMapper.INSTANCE.toUser(userDTO);
-        Optional<User> userDB = userRepository.findById(user.getLogin());
+    public LoginDTO logInUser(LoginDTO loginDTO) {
+        Optional<User> userDB = userRepository.findById(loginDTO.getLogin());
         if (userDB.isPresent()) {
-            if (user.getUserPassword().equals(userDB.get().getUserPassword())) {
-                return user;
+            if (loginDTO.getUserPassword().equals(userDB.get().getUserPassword())) {
+                return loginDTO;
             }
         }
         return null;

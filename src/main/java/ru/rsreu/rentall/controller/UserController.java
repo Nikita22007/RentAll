@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.rsreu.rentall.dto.LoginDTO;
 import ru.rsreu.rentall.dto.UserDTO;
 import ru.rsreu.rentall.service.UserService;
 
@@ -11,8 +12,8 @@ import ru.rsreu.rentall.service.UserService;
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService messageService) {
-        this.userService = messageService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/registrate_user")
@@ -20,14 +21,14 @@ public class UserController {
         if (userService.saveUser(userDTO) != null) {
             return ResponseEntity.status(201).build();
         }
-        return ResponseEntity.status(500).build();
+        return ResponseEntity.status(400).build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) {
-        if (userService.logInUser(userDTO) != null) {
-            return ResponseEntity.status(200).body(userDTO);
+    public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO) {
+        if (userService.logInUser(loginDTO) != null) {
+            return ResponseEntity.status(200).body(loginDTO);
         }
-        return ResponseEntity.status(500).build();
+        return ResponseEntity.status(400).build();
     }
 }

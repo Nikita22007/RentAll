@@ -4,12 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rsreu.rentall.dto.AdvertisementDTO;
 import ru.rsreu.rentall.entity.Advertisement;
-import ru.rsreu.rentall.entity.Chat;
 import ru.rsreu.rentall.mapper.AdvertisementMapper;
-import ru.rsreu.rentall.mapper.ChatMapper;
 import ru.rsreu.rentall.service.AdvertisementService;
-
-import java.util.Optional;
 
 @RestController
 public class AdvertisementController {
@@ -31,16 +27,16 @@ public class AdvertisementController {
         if (advertisement != null){
             return ResponseEntity.status(200).body(AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisement));
         }
-        return ResponseEntity.status(500).build();
+        return ResponseEntity.status(400).build();
     }
 
-    @GetMapping("/delete_advertisement_{adv_id}")
+    @DeleteMapping("/delete_advertisement_{adv_id}")
     public ResponseEntity<AdvertisementDTO> deleteAdvertisement(@PathVariable int adv_id){
         Advertisement advertisement = advertisementService.getAdvertisementById(adv_id);
         if (advertisement != null){
             advertisementService.deleteAdvertisement(advertisement);
             return ResponseEntity.status(200).body(AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisement));
         }
-        return ResponseEntity.status(500).build();
+        return ResponseEntity.status(400).build();
     }
 }

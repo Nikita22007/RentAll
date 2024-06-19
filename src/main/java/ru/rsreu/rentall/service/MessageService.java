@@ -1,11 +1,10 @@
 package ru.rsreu.rentall.service;
 
 import org.springframework.stereotype.Service;
+import ru.rsreu.rentall.dto.MessageDTO;
 import ru.rsreu.rentall.entity.Message;
+import ru.rsreu.rentall.mapper.MessageMapper;
 import ru.rsreu.rentall.repository.MessageRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MessageService {
@@ -15,11 +14,8 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public List<Message> getAll() {
-        return messageRepository.findAll();
-    }
-
-    public Optional<Message> findById(Long id) {
-        return messageRepository.findById(id);
+    public Message send(MessageDTO messageDTO) {
+        Message message = MessageMapper.INSTANCE.toMessage(messageDTO);
+        return messageRepository.save(message);
     }
 }
