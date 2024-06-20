@@ -22,9 +22,9 @@ public class ChatController {
     public ResponseEntity<ChatDTO> getChat(@PathVariable int id,
                                            @RequestParam String senderLogin,
                                            @RequestParam String receiverLogin) {
-        Chat chat = chatService.getChatById(id, senderLogin, receiverLogin);
-        if (chat != null) {
-            return ResponseEntity.ok().body(ChatMapper.INSTANCE.toChatDTO(chat));
+        ChatDTO chatDTO = chatService.getChatById(id, senderLogin, receiverLogin);
+        if (chatDTO != null) {
+            return ResponseEntity.ok().body(chatDTO);
         }
         return ResponseEntity.status(400).build();
     }
