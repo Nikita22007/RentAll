@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.rsreu.rentall.controller.UserController;
 import ru.rsreu.rentall.dto.LoginDTO;
@@ -25,9 +26,12 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Import({UserController.class, UserService.class})
@@ -55,14 +59,18 @@ public class UserControllerTest {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         objectMapper = new ObjectMapper();
         objectMapper.setDateFormat(df);
-        userDTO.setUserAddress("string");
+        userDTO.setUserAddress("Ryazan");
         userDTO.setUserPassword("12345");
-        userDTO.setUserFullName("string");
-        userDTO.setLogin("string");
-        userDTO.setPhoneNumber("string");
+        userDTO.setUserFullName("Kirill");
+        userDTO.setLogin("buhanka");
+        userDTO.setPhoneNumber("89276548756");
         userDTO.setCreationTime(new Timestamp(System.currentTimeMillis()));
 
-
+        user.setUserPassword(this.userDTO.getUserPassword());
+        user.setUserFullName(this.userDTO.getUserFullName());
+        user.setUserAddress(this.userDTO.getUserAddress());
+        user.setPhoneNumber(this.userDTO.getPhoneNumber());
+        user.setCreationTime(this.userDTO.getCreationTime());
     }
 
     @Test
@@ -79,23 +87,38 @@ public class UserControllerTest {
     }
 
     @Test
-    void loginUser() throws Exception {
+    void loginUser_correctPasswd() throws Exception {
+        // инициализация логина
         LoginDTO login = new LoginDTO();
         login.setUserPassword(userDTO.getUserPassword());
         login.setLogin(userDTO.getLogin());
         String loginJson = objectMapper.writeValueAsString(login);
-        user = UserMapper.INSTANCE.toUser(userDTO);
-        User user = new User();
-        user.setUserPassword(this.userDTO.getUserPassword());
-        user.setUserFullName(this.userDTO.getUserFullName());
-        user.setUserAddress(this.userDTO.getUserAddress());
-        user.setPhoneNumber(this.userDTO.getPhoneNumber());
-        user.setCreationTime(this.userDTO.getCreationTime());
+        // вызов тестируемого метода
         Mockito.doReturn(Optional.of(user)).when(userRepository).findById(ArgumentMatchers.any());
         mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
-                .andExpect(status().is(200));
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$").value(user.getUserFullName()));
+        verify(userRepository, times(1)).findById(ArgumentMatchers.any());
+    }
+
+    @Test
+    void loginUser_wrongPasswd() throws Exception {
+        // инициализация логина
+        LoginDTO login = new LoginDTO();
+        login.setUserPassword(userDTO.getUserPassword());
+        login.setLogin(userDTO.getLogin());
+        // инициализация неправильного пароля пользователя
+        user.setUserPassword("wrongPasswd");
+        // создание входных данных для вызова метода
+        String loginJson = objectMapper.writeValueAsString(login);
+        // вызов тестируемого метода
+        Mockito.doReturn(Optional.of(user)).when(userRepository).findById(ArgumentMatchers.any());
+        mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginJson))
+                .andExpect(status().is(400));
         verify(userRepository, times(1)).findById(ArgumentMatchers.any());
     }
 
