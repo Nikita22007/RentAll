@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.rentall.dto.ChatDTO;
-import ru.tinkoff.rentall.entity.Chat;
-import ru.tinkoff.rentall.mapper.ChatMapper;
 import ru.tinkoff.rentall.service.ChatService;
 
 @RestController
