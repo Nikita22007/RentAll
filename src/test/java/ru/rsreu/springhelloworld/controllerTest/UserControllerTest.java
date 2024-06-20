@@ -99,7 +99,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(status().is(200))
-                .andExpect(jsonPath("$").value(user.getUserFullName()));
+                .andExpect(jsonPath("$.userFullName").value(user.getUserFullName()));
         verify(userRepository, times(1)).findById(ArgumentMatchers.any());
     }
 

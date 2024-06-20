@@ -13,13 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.rsreu.rentall.controller.MessageController;
-import ru.rsreu.rentall.dto.MessageDTO;
-import ru.rsreu.rentall.dto.UserDTO;
-import ru.rsreu.rentall.entity.Message;
-import ru.rsreu.rentall.entity.User;
-import ru.rsreu.rentall.repository.MessageRepository;
-import ru.rsreu.rentall.service.MessageService;
+import ru.tinkoff.rentall.controller.MessageController;
+import ru.tinkoff.rentall.dto.MessageDTO;
+import ru.tinkoff.rentall.entity.Message;
+import ru.tinkoff.rentall.repository.MessageRepository;
+import ru.tinkoff.rentall.service.MessageService;
+
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
