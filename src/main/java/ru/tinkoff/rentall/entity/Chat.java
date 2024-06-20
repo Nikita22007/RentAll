@@ -10,7 +10,6 @@ import ru.tinkoff.rentall.composite_id.ChatId;
 @IdClass(ChatId.class)
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int chatId;
     @Id
     private String userOneLogin;

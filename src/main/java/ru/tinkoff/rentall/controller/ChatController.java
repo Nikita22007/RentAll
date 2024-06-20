@@ -1,10 +1,7 @@
 package ru.tinkoff.rentall.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.rentall.dto.ChatDTO;
 import ru.tinkoff.rentall.service.ChatService;
 
@@ -23,6 +20,14 @@ public class ChatController {
         ChatDTO chatDTO = chatService.getChatById(id, senderLogin, receiverLogin);
         if (chatDTO != null) {
             return ResponseEntity.ok().body(chatDTO);
+        }
+        return ResponseEntity.status(400).build();
+    }
+
+    @PostMapping("/create_chat")
+    public ResponseEntity<ChatDTO> setChat(@RequestBody ChatDTO chatDTO) {
+        if (chatService.createChat(chatDTO) != null){
+            return ResponseEntity.status(201).body(chatDTO);
         }
         return ResponseEntity.status(400).build();
     }

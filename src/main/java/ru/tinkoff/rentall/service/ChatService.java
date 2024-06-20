@@ -15,6 +15,14 @@ public class ChatService {
         this.chatRepository = chatRepository;
     }
 
+    public Chat createChat(ChatDTO chatDTO) {
+        Chat chat = ChatMapper.INSTANCE.toChat(chatDTO);
+        if (chatRepository.findById(new ChatId(chat.getChatId(), chat.getUserOneLogin(), chat.getUserTwoLogin())).isEmpty()) {
+            return chatRepository.save(chat);
+        }
+        return null;
+    }
+
     public ChatDTO getChatById(int id, String userOneLogin, String userTwoLogin) {
         Chat chat = chatRepository.findById(new ChatId(id, userOneLogin, userTwoLogin)).orElse(null);
         return ChatMapper.INSTANCE.toChatDTO(chat);
