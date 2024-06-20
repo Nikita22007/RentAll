@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.rentall.dto.LoginDTO;
 import ru.tinkoff.rentall.dto.UserDTO;
+import ru.tinkoff.rentall.dto.UserFullNameDTO;
 import ru.tinkoff.rentall.service.UserService;
 
 @RestController
@@ -25,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
-        String fullName = userService.logInUser(loginDTO);
+    public ResponseEntity<UserFullNameDTO> login(@RequestBody LoginDTO loginDTO) {
+        UserFullNameDTO fullName = userService.logInUser(loginDTO);
         if (fullName != null) {
             return ResponseEntity.status(200).body(fullName);
         }

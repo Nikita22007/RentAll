@@ -3,11 +3,10 @@ package ru.tinkoff.rentall.service;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.rentall.dto.LoginDTO;
 import ru.tinkoff.rentall.dto.UserDTO;
+import ru.tinkoff.rentall.dto.UserFullNameDTO;
 import ru.tinkoff.rentall.entity.User;
 import ru.tinkoff.rentall.mapper.UserMapper;
 import ru.tinkoff.rentall.repository.UserRepository;
-
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -25,11 +24,11 @@ public class UserService {
         return null;
     }
 
-    public String logInUser(LoginDTO loginDTO) {
-        Optional<User> userDB = userRepository.findById(loginDTO.getLogin());
-        if (userDB.isPresent()) {
-            if (loginDTO.getUserPassword().equals(userDB.get().getUserPassword())) {
-                return userDB.get().getUserFullName();
+    public UserFullNameDTO logInUser(LoginDTO loginDTO) {
+        User userDB = userRepository.findById(loginDTO.getLogin()).orElse(null);
+        if (userDB != null) {
+            if (loginDTO.getUserPassword().equals(userDB.getUserPassword())) {
+                return new UserFullNameDTO(userDB.getUserFullName());
             }
         }
         return null;
