@@ -1,0 +1,32 @@
+package ru.tinkoff.rentall.service;
+
+import org.springframework.stereotype.Service;
+import ru.tinkoff.rentall.dto.CategoryDTO;
+import ru.tinkoff.rentall.entity.Category;
+import ru.tinkoff.rentall.mapper.CategoryMapper;
+import ru.tinkoff.rentall.repository.CategoryRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class CategoryService {
+    private final CategoryRepository categoryRepository;
+
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    public Category createCategory(CategoryDTO categoryDTO) {
+        Category category = CategoryMapper.INSTANCE.toCategory(categoryDTO);
+        return categoryRepository.save(category);
+    }
+
+    public List<Category> getAll() {
+        return categoryRepository.findAll();
+    }
+
+    public Optional<Category> findById(Long id) {
+        return categoryRepository.findById(id);
+    }
+}

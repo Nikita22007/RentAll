@@ -34,4 +34,14 @@
         <modifyDataType tableName="advertisements" columnName="time_unit" newDataType="VARCHAR(10)"/>
     </changeSet>
 
+    <changeSet id="change-fk-chats" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="messages" constraintName="fk_sender_login"/>
+        <dropPrimaryKey tableName="chats" constraintName="pk_id_user_one_user_two"/>
+        <addForeignKeyConstraint baseTableName="chats" baseColumnNames="chat_id" constraintName="fk_adv_id" referencedTableName="advertisements"
+                                 referencedColumnNames="adv_id"/>
+        <addPrimaryKey tableName="chats" columnNames="chat_id, user_one_login, user_two_login" constraintName="pk_id_user_one_user_two"/>
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="chat_id, sender_login, receiver_login" constraintName="fk_sender_login"
+                                 referencedTableName="chats" referencedColumnNames="chat_id, user_one_login, user_two_login"/>
+    </changeSet>
+
 </databaseChangeLog>

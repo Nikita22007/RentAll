@@ -13,14 +13,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.rsreu.rentall.controller.UserController;
-import ru.rsreu.rentall.dto.LoginDTO;
-import ru.rsreu.rentall.dto.UserDTO;
-import ru.rsreu.rentall.entity.User;
-import ru.rsreu.rentall.mapper.UserMapper;
-import ru.rsreu.rentall.repository.UserRepository;
+import ru.tinkoff.rentall.controller.UserController;
+import ru.tinkoff.rentall.dto.LoginDTO;
+import ru.tinkoff.rentall.dto.UserDTO;
+import ru.tinkoff.rentall.entity.User;
+import ru.tinkoff.rentall.mapper.UserMapper;
+import ru.tinkoff.rentall.repository.UserRepository;
 
-import ru.rsreu.rentall.service.UserService;
+import ru.tinkoff.rentall.service.UserService;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

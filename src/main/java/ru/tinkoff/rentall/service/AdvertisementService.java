@@ -1,0 +1,41 @@
+package ru.tinkoff.rentall.service;
+
+import org.springframework.stereotype.Service;
+import ru.tinkoff.rentall.dto.AdvertisementDTO;
+import ru.tinkoff.rentall.entity.Advertisement;
+import ru.tinkoff.rentall.mapper.AdvertisementMapper;
+import ru.tinkoff.rentall.repository.AdvertisementRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class AdvertisementService {
+    private final AdvertisementRepository advertisementRepository;
+
+    public AdvertisementService(AdvertisementRepository advertisementRepository) {
+        this.advertisementRepository = advertisementRepository;
+    }
+
+    public Advertisement createAdvertisement(AdvertisementDTO advertisementDTO) {
+        Advertisement advertisement = AdvertisementMapper.INSTANCE.toAdvertisement(advertisementDTO);
+        return advertisementRepository.save(advertisement);
+    }
+
+    public AdvertisementDTO getAdvertisementById(int id) {
+        return AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisementRepository.findById((long) id).orElse(null));
+    }
+
+    public void deleteAdvertisement(AdvertisementDTO advertisementDTO) {
+        advertisementRepository.delete(AdvertisementMapper.INSTANCE.toAdvertisement(advertisementDTO));
+    }
+
+    public List<AdvertisementDTO> getAdvertisementBoard() {
+        List<Advertisement> advertisementBoard = advertisementRepository.findAll();
+        List<AdvertisementDTO> advertisementDTOList = new ArrayList<>();
+        for (Advertisement advertisement : advertisementBoard) {
+            advertisementDTOList.add(AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisement));
+        }
+        return advertisementDTOList;
+    }
+}
