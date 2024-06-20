@@ -1,9 +1,6 @@
 package ru.tinkoff.rentall.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +18,8 @@ public class Advertisement {
     private int rentTime;
     private boolean isBarterAllowed;
     private String advPrice;
-    private String userLogin;
+    @OneToOne @JoinColumn(name = "user_login", referencedColumnName = "login")
+    private User user;
     private int imageId;
     private int categoryId;
     private Timestamp creationTime;
