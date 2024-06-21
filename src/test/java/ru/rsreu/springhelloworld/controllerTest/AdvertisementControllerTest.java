@@ -30,6 +30,7 @@ import ru.tinkoff.rentall.repository.UserRepository;
 import ru.tinkoff.rentall.service.AdvertisementService;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,8 +72,9 @@ public class AdvertisementControllerTest {
     @BeforeEach
     void setUp(){
         mockMvc = MockMvcBuilders.standaloneSetup(advController).build();
-        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         objectMapper = new ObjectMapper();
+        objectMapper.setDateFormat(df);
         this.adv = AdvertisementTestEntity.getAdvertisement();
         this.parameters = new EasyRandomParameters()
                 .charset(StandardCharsets.UTF_8)
@@ -96,7 +98,7 @@ public class AdvertisementControllerTest {
                 .andExpect(jsonPath("$.userLogin").value(adv.getUser().getLogin()))
                 .andExpect(jsonPath("$.imageId").value(adv.getImageId()))
                 .andExpect(jsonPath("$.categoryId").value(adv.getCategoryId()))
-                .andExpect(jsonPath("$.creationTime").value(objectMapper.writeValueAsString(adv.getCreationTime())));
+                .andExpect(jsonPath("$.creationTime").value(adv.getCreationTime().getTime()));
         verify(advertisementRepository, times(1)).findById(0L);
     }
 
@@ -145,8 +147,9 @@ public class AdvertisementControllerTest {
                         dtoList.get(1).getImageId(), dtoList.get(2).getImageId(), dtoList.get(3).getImageId())))
                 .andExpect(jsonPath("$[*].categoryId", containsInAnyOrder(dtoList.get(0).getCategoryId(),
                         dtoList.get(1).getCategoryId(), dtoList.get(2).getCategoryId(), dtoList.get(3).getCategoryId())))
-                .andExpect(jsonPath("$[*].creationTime", containsInAnyOrder(dtoList.get(0).getCreationTime(),
-                        dtoList.get(1).getCreationTime(), dtoList.get(2).getCreationTime(), dtoList.get(3).getCreationTime())));
+                .andExpect(jsonPath("$[*].creationTime", containsInAnyOrder(dtoList.get(0).getCreationTime().getTime(),
+                        dtoList.get(1).getCreationTime().getTime(), dtoList.get(2).getCreationTime().getTime(),
+                        dtoList.get(3).getCreationTime().getTime())));
 
 
     }
