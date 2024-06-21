@@ -5,14 +5,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.rsreu.springhelloworld.testEntities.AdvertisementTestEntity;
+import ru.rsreu.springhelloworld.testEntities.UserTestEntity;
 import ru.tinkoff.rentall.controller.AdvertisementController;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
 import ru.tinkoff.rentall.entity.Advertisement;
@@ -21,11 +24,10 @@ import ru.tinkoff.rentall.repository.AdvertisementRepository;
 import ru.tinkoff.rentall.repository.UserRepository;
 import ru.tinkoff.rentall.service.AdvertisementService;
 
-import java.text.SimpleDateFormat;
 import java.util.Optional;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static io.github.benas.randombeans.api.EnhancedRandom.random;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -58,17 +60,15 @@ public class AdvertisementControllerTest {
     @BeforeEach
     void setUp(){
         mockMvc = MockMvcBuilders.standaloneSetup(advController).build();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         objectMapper = new ObjectMapper();
-        objectMapper.setDateFormat(df);
+//        objectMapper.setDateFormat(df);
         this.adv = AdvertisementTestEntity.getAdvertisement();
 
     }
 
     @Test
     void getAdvertisement() throws Exception {
-        //this.adv = AdvertisementTestEntity.getAdvertisement();
-
         AdvertisementDTO advDTO = AdvertisementMapper.INSTANCE.toAdvertisementDTO(adv);
         System.out.print(objectMapper.writeValueAsString(advDTO));
         Mockito.doReturn(Optional.of(adv)).when(advertisementRepository).findById(0L);
@@ -81,10 +81,25 @@ public class AdvertisementControllerTest {
                 .andExpect(jsonPath("$.barterAllowed").value(adv.isBarterAllowed()))
                 .andExpect(jsonPath("$.userLogin").value(adv.getUser().getLogin()))
                 .andExpect(jsonPath("$.imageId").value(adv.getImageId()))
-                .andExpect(jsonPath("$.categoryId").value(adv.getCategoryId()));
-                //.andExpect(jsonPath("$.creationTime").value(adv.getCreationTime()));
+                .andExpect(jsonPath("$.categoryId").value(adv.getCategoryId()))
+                .andExpect(jsonPath("$.creationTime").value(objectMapper.writeValueAsString(adv.getCreationTime())));
         verify(advertisementRepository, times(1)).findById(0L);
     }
+
+    @Test
+    void setAdvertisement_successful() throws Exception {
+        AdvertisementDTO advDTO = AdvertisementMapper.INSTANCE.toAdvertisementDTO(this.adv);
+        String advJson = objectMapper.writeValueAsString(advDTO);
+        doReturn(adv).when(advertisementRepository).save(ArgumentMatchers.any());
+        doReturn(Optional.of(UserTestEntity.getUser())).when(userRepository).findById(ArgumentMatchers.any());
+        mockMvc.perform(post("/create_advertisement")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(advJson))
+                .andExpect(status().isCreated());
+        verify(userRepository, times(1)).findById(ArgumentMatchers.any());
+        verify(advertisementRepository, times(1)).save(ArgumentMatchers.any());
+    }
+
 
 
 }
