@@ -1,6 +1,8 @@
 package ru.rsreu.springhelloworld.controllerTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jeasy.random.EasyRandom;
+import org.jeasy.random.EasyRandomParameters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -13,23 +15,31 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.rsreu.springhelloworld.testEntities.AdvertisementTestEntity;
 import ru.rsreu.springhelloworld.testEntities.UserTestEntity;
 import ru.tinkoff.rentall.controller.AdvertisementController;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
 import ru.tinkoff.rentall.entity.Advertisement;
+import ru.tinkoff.rentall.entity.User;
 import ru.tinkoff.rentall.mapper.AdvertisementMapper;
 import ru.tinkoff.rentall.repository.AdvertisementRepository;
 import ru.tinkoff.rentall.repository.UserRepository;
 import ru.tinkoff.rentall.service.AdvertisementService;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
+import static java.nio.charset.Charset.forName;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hibernate.engine.internal.Versioning.seed;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,6 +65,7 @@ public class AdvertisementControllerTest {
 
     private Advertisement adv;
 
+    private EasyRandomParameters parameters;
 
 
     @BeforeEach
@@ -62,8 +73,11 @@ public class AdvertisementControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(advController).build();
         //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         objectMapper = new ObjectMapper();
-//        objectMapper.setDateFormat(df);
         this.adv = AdvertisementTestEntity.getAdvertisement();
+        this.parameters = new EasyRandomParameters()
+                .charset(StandardCharsets.UTF_8)
+                .stringLengthRange(5, 20)
+                .collectionSizeRange(1, 10);
 
     }
 
@@ -95,10 +109,69 @@ public class AdvertisementControllerTest {
         mockMvc.perform(post("/create_advertisement")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(advJson))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated()).andReturn();
         verify(userRepository, times(1)).findById(ArgumentMatchers.any());
         verify(advertisementRepository, times(1)).save(ArgumentMatchers.any());
     }
+
+
+    @Test
+    void getAdvertisementBoard_successful() throws Exception {
+        List<AdvertisementDTO> dtoList = new ArrayList<>();
+        List<Advertisement> advList = new ArrayList<>();
+        EasyRandom esr = new EasyRandom(this.parameters);
+        for (int i = 0; i < 4; i++){
+            //dtoList.add(new EasyRandom(this.parameters).nextObject(AdvertisementDTO.class));
+            User tempUser = esr.nextObject(User.class);
+            Advertisement tempAdv = esr.nextObject(Advertisement.class);
+            tempAdv.setUser(tempUser);
+            advList.add(tempAdv);
+            dtoList.add(AdvertisementMapper.INSTANCE.toAdvertisementDTO(tempAdv));
+        }
+        doReturn(advList).when(advertisementRepository).findAll();
+        mockMvc.perform(get("/advertisement_board"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[*].advName", containsInAnyOrder(dtoList.get(0).getAdvName(),
+                        dtoList.get(1).getAdvName(), dtoList.get(2).getAdvName(), dtoList.get(3).getAdvName())))
+                .andExpect(jsonPath("$[*].description", containsInAnyOrder(dtoList.get(0).getDescription(),
+                        dtoList.get(1).getDescription(), dtoList.get(2).getDescription(), dtoList.get(3).getDescription())))
+                .andExpect(jsonPath("$[*].timeUnit", containsInAnyOrder(dtoList.get(0).getTimeUnit(),
+                        dtoList.get(1).getTimeUnit(), dtoList.get(2).getTimeUnit(), dtoList.get(3).getTimeUnit())))
+                .andExpect(jsonPath("$[*].barterAllowed", containsInAnyOrder(dtoList.get(0).isBarterAllowed(),
+                        dtoList.get(1).isBarterAllowed(), dtoList.get(2).isBarterAllowed(), dtoList.get(3).isBarterAllowed())))
+                .andExpect(jsonPath("$[*].userLogin", containsInAnyOrder(dtoList.get(0).getUserLogin(),
+                        dtoList.get(1).getUserLogin(), dtoList.get(2).getUserLogin(), dtoList.get(3).getUserLogin())))
+                .andExpect(jsonPath("$[*].imageId", containsInAnyOrder(dtoList.get(0).getImageId(),
+                        dtoList.get(1).getImageId(), dtoList.get(2).getImageId(), dtoList.get(3).getImageId())))
+                .andExpect(jsonPath("$[*].categoryId", containsInAnyOrder(dtoList.get(0).getCategoryId(),
+                        dtoList.get(1).getCategoryId(), dtoList.get(2).getCategoryId(), dtoList.get(3).getCategoryId())))
+                .andExpect(jsonPath("$[*].creationTime", containsInAnyOrder(dtoList.get(0).getCreationTime(),
+                        dtoList.get(1).getCreationTime(), dtoList.get(2).getCreationTime(), dtoList.get(3).getCreationTime())));
+
+
+    }
+
+    @Test
+    void deleteAdvertisement_successful() throws Exception {
+        doReturn(Optional.of(AdvertisementTestEntity.getAdvertisement())).when(advertisementRepository).findById(ArgumentMatchers.any());
+        mockMvc.perform(delete("/delete_advertisement/{adv_id}", 0L))
+                .andExpect(status().isOk());
+        verify(advertisementRepository, times(1)).findById(ArgumentMatchers.any());
+        verify(advertisementRepository, times(1)).delete(ArgumentMatchers.any());
+    }
+
+    @Test
+    void deleteAdvertisement_notFoundUser() throws Exception {
+        doReturn(Optional.empty()).when(advertisementRepository).findById(ArgumentMatchers.any());
+        mockMvc.perform(delete("/delete_advertisement/{adv_id}", 0L))
+                .andExpect(status().is(400));
+        verify(advertisementRepository, times(1)).findById(ArgumentMatchers.any());
+        verify(advertisementRepository, times(0)).delete(ArgumentMatchers.any());
+    }
+
+
+
+
 
 
 
