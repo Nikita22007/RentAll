@@ -1,4 +1,4 @@
-package ru.tinkoff.rentall.webconfigurer;
+package ru.tinkoff.rentall.configurer;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
