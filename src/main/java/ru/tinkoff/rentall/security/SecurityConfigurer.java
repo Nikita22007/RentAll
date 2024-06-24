@@ -23,6 +23,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .cors().disable()
                 .formLogin().disable()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**").permitAll()
