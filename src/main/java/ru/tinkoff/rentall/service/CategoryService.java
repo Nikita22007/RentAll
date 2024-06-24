@@ -1,5 +1,6 @@
 package ru.tinkoff.rentall.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.rentall.dto.CategoryDTO;
 import ru.tinkoff.rentall.entity.Category;
@@ -10,12 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
-
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     public Category createCategory(CategoryDTO categoryDTO) {
         Category category = CategoryMapper.INSTANCE.toCategory(categoryDTO);
@@ -26,7 +24,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Optional<Category> findById(Long id) {
+    public Optional<Category> findById(Integer id) {
         return categoryRepository.findById(id);
     }
 }

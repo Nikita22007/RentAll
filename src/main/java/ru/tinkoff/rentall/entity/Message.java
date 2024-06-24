@@ -1,24 +1,24 @@
 package ru.tinkoff.rentall.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity(name = "messages")
 @Getter @Setter
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int msgId;
+    private Integer msgId;
     private String senderLogin;
     private String receiverLogin;
     private String msg;
     private int imageId;
-    private Timestamp sendingTime;
+    private LocalDateTime sendingTime;
     private int chatId;
 }

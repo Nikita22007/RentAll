@@ -1,9 +1,9 @@
 package ru.tinkoff.rentall.entity;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity(name = "Advertisements")
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 public class Advertisement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int advId;
+    private Integer advId;
     private String advName;
     private String description;
     private String timeUnit;

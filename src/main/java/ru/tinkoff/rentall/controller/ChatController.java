@@ -1,17 +1,15 @@
 package ru.tinkoff.rentall.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.rentall.dto.ChatDTO;
 import ru.tinkoff.rentall.service.ChatService;
 
 @RestController
+@RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
-
-    public ChatController(ChatService chatService) {
-        this.chatService = chatService;
-    }
 
     @GetMapping("/chat/{id}")
     public ResponseEntity<ChatDTO> getChat(@PathVariable int id,

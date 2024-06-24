@@ -1,11 +1,11 @@
 package ru.tinkoff.rentall.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity(name = "users")
 @Getter @Setter
@@ -16,5 +16,5 @@ public class User {
     @Id
     private String login;
     private String userPassword;
-    private Timestamp creationTime;
+    private LocalDateTime creationTime;
 }

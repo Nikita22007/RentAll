@@ -6,3 +6,5 @@ spring:
     password: ${DB_PASSWORD}
   liquibase:
     change-log: db/changelog/main-changelog.xml
+jwt:
+  secretKey: SECRET

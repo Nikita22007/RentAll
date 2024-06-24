@@ -1,36 +1,52 @@
 package ru.tinkoff.rentall.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.rentall.dto.LoginDTO;
+import ru.tinkoff.rentall.dto.UserAuthDTO;
 import ru.tinkoff.rentall.dto.UserDTO;
-import ru.tinkoff.rentall.dto.UserFullNameDTO;
-import ru.tinkoff.rentall.service.UserService;
+import ru.tinkoff.rentall.entity.User;
+import ru.tinkoff.rentall.mapper.UserMapper;
+import ru.tinkoff.rentall.security.JWTUtil;
+import ru.tinkoff.rentall.security.UserValidator;
+import ru.tinkoff.rentall.service.AuthService;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final AuthService authService;
+    private final UserValidator userValidator;
+    private final JWTUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/registrate_user")
-    public ResponseEntity<Void> setUser(@RequestBody UserDTO userDTO) {
-        if (userService.saveUser(userDTO) != null) {
-            return ResponseEntity.status(201).build();
-        }
-        return ResponseEntity.status(400).build();
+    public ResponseEntity<UserAuthDTO> regUser(@RequestBody UserDTO userDTO, BindingResult bindingResult) {
+        User user = UserMapper.INSTANCE.toUser(userDTO);
+        userValidator.validate(user, bindingResult);
+        authService.saveUser(userDTO);
+        String token = jwtUtil.generateToken(user.getLogin());
+        return ResponseEntity.status(200).body(new UserAuthDTO(token, userDTO.getUserFullName()));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserFullNameDTO> login(@RequestBody LoginDTO loginDTO) {
-        UserFullNameDTO fullName = userService.logInUser(loginDTO);
-        if (fullName != null) {
-            return ResponseEntity.status(200).body(fullName);
+    public ResponseEntity<UserAuthDTO> login(@RequestBody LoginDTO loginDTO) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                loginDTO.getLogin(),
+                loginDTO.getUserPassword()
+        );
+        try {
+            authenticationManager.authenticate(token);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(400).build();
         }
-        return ResponseEntity.status(400).build();
+        String generatedToken = jwtUtil.generateToken(loginDTO.getLogin());
+        return ResponseEntity.status(200).body(new UserAuthDTO(generatedToken, loginDTO.getLogin()));
     }
 }

@@ -1,5 +1,6 @@
 package ru.tinkoff.rentall.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
 import ru.tinkoff.rentall.entity.Advertisement;
@@ -12,14 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AdvertisementService {
     private final AdvertisementRepository advertisementRepository;
     private final UserRepository userRepository;
-
-    public AdvertisementService(AdvertisementRepository advertisementRepository, UserRepository userRepository) {
-        this.advertisementRepository = advertisementRepository;
-        this.userRepository = userRepository;
-    }
 
     public Advertisement createAdvertisement(AdvertisementDTO advertisementDTO) {
         User user = userRepository.findById(advertisementDTO.getUserLogin()).orElseThrow(() -> new RuntimeException());
@@ -29,7 +26,7 @@ public class AdvertisementService {
     }
 
     public AdvertisementDTO getAdvertisementById(int id) {
-        return AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisementRepository.findById((long) id).orElse(null));
+        return AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisementRepository.findById(id).orElse(null));
     }
 
     public void deleteAdvertisement(AdvertisementDTO advertisementDTO) {

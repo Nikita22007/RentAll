@@ -1,5 +1,6 @@
 package ru.tinkoff.rentall.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
@@ -8,12 +9,9 @@ import ru.tinkoff.rentall.service.AdvertisementService;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class AdvertisementController {
     private final AdvertisementService advertisementService;
-
-    public AdvertisementController(AdvertisementService messageService) {
-        this.advertisementService = messageService;
-    }
 
     @PostMapping("/create_advertisement")
     public ResponseEntity<Void> setAdvertisement(@RequestBody AdvertisementDTO advertisementDTO) {

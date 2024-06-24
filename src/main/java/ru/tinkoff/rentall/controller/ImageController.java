@@ -1,5 +1,6 @@
 package ru.tinkoff.rentall.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,12 +14,9 @@ import ru.tinkoff.rentall.service.ImageService;
 import java.io.IOException;
 
 @RestController
+@RequiredArgsConstructor
 public class ImageController {
     private final ImageService imageService;
-
-    public ImageController(ImageService imageService) {
-        this.imageService = imageService;
-    }
 
     @PostMapping(value = "/image_upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadImage(@RequestParam("file") MultipartFile file) {

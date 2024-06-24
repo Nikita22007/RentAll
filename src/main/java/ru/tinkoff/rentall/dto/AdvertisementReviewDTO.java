@@ -3,7 +3,7 @@ package ru.tinkoff.rentall.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter @Setter
 public class AdvertisementReviewDTO {
@@ -11,5 +11,5 @@ public class AdvertisementReviewDTO {
     private int postId;
     private String feedback;
     private int mark;
-    private Timestamp postTime;
+    private LocalDateTime postTime;
 }

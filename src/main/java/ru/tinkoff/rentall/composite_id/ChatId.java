@@ -8,7 +8,7 @@ import java.io.Serializable;
 @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode
 public class ChatId implements Serializable {
-    private int chatId;
+    private Integer chatId;
     private String userOneLogin;
     private String userTwoLogin;
 }
