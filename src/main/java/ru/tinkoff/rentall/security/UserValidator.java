@@ -20,9 +20,8 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         User user = (User) target;
-        if (userService.loadUserByUsername(user.getLogin()) == null) {
-            return;
+        if (userService.loadUserByUsername(user.getLogin()) != null) {
+            errors.rejectValue("username", "Такой пользователь существует");
         }
-        errors.rejectValue("username", "Такой пользователь существует");
     }
 }

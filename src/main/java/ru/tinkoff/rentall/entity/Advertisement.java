@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity(name = "Advertisements")
 @Getter @Setter
@@ -22,5 +22,5 @@ public class Advertisement {
     private User user;
     private int imageId;
     private int categoryId;
-    private Timestamp creationTime;
+    private LocalDateTime creationTime;
 }

@@ -3,7 +3,7 @@ package ru.tinkoff.rentall.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter @Setter
 public class AdvertisementDTO {
@@ -16,5 +16,5 @@ public class AdvertisementDTO {
     private String userLogin;
     private int imageId;
     private int categoryId;
-    private Timestamp creationTime;
+    private LocalDateTime creationTime;
 }
