@@ -15,6 +15,6 @@ public class AdvertisementDTO {
     private String advPrice;
     private String userLogin;
     private int imageId;
-    private int categoryId;
+    private String categoryName;
     private LocalDateTime creationTime;
 }

@@ -22,6 +22,6 @@ public class Advertisement {
     @OneToOne @JoinColumn(name = "user_login", referencedColumnName = "login")
     private User user;
     private int imageId;
-    private int categoryId;
+    private String categoryName;
     private LocalDateTime creationTime;
 }

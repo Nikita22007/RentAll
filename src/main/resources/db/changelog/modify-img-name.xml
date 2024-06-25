@@ -44,4 +44,18 @@
                                  referencedTableName="chats" referencedColumnNames="chat_id, user_one_login, user_two_login"/>
     </changeSet>
 
+    <changeSet id="change-pk" author="killreal">
+        <dropForeignKeyConstraint baseTableName="advertisements" constraintName="fk_adv_cat_id"/>
+        <dropPrimaryKey tableName="categories"/>
+        <dropColumn tableName="categories" columnName="cat_id"/>
+        <addPrimaryKey
+                tableName="categories"
+                columnNames="cat_name"
+                constraintName="pk_cat_name"/>
+        <renameColumn tableName="advertisements" oldColumnName="category_id" newColumnName="category_name"/>
+        <modifyDataType tableName="advertisements" columnName="category_name" newDataType="CHAR(50)"/>
+        <addForeignKeyConstraint baseTableName="advertisements" baseColumnNames="category_name" constraintName="fk_adv_cat_name" referencedTableName="categories"
+                                 referencedColumnNames="cat_name"/>
+    </changeSet>
+
 </databaseChangeLog>
