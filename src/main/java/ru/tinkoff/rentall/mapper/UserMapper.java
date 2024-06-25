@@ -1,6 +1,7 @@
 package ru.tinkoff.rentall.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import ru.tinkoff.rentall.dto.UserDTO;
 import ru.tinkoff.rentall.entity.User;
