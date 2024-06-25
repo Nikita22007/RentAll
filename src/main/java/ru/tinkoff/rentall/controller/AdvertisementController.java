@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
+import ru.tinkoff.rentall.dto.SearchDTO;
 import ru.tinkoff.rentall.service.AdvertisementService;
 
 import java.util.List;
@@ -45,5 +46,11 @@ public class AdvertisementController {
             return ResponseEntity.status(200).body(advertisementDTO);
         }
         return ResponseEntity.status(400).build();
+    }
+
+    @PostMapping("/search_advertisement")
+    public ResponseEntity<List<AdvertisementDTO>> search(@RequestBody SearchDTO searchQuery) {
+        List<AdvertisementDTO> searchedAdvertisements = advertisementService.search(searchQuery);
+        return ResponseEntity.status(200).body(searchedAdvertisements);
     }
 }

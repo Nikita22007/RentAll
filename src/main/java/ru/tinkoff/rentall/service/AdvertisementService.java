@@ -3,6 +3,7 @@ package ru.tinkoff.rentall.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
+import ru.tinkoff.rentall.dto.SearchDTO;
 import ru.tinkoff.rentall.entity.Advertisement;
 import ru.tinkoff.rentall.entity.User;
 import ru.tinkoff.rentall.mapper.AdvertisementMapper;
@@ -40,5 +41,14 @@ public class AdvertisementService {
             advertisementDTOList.add(AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisement));
         }
         return advertisementDTOList;
+    }
+
+    public List<AdvertisementDTO> search(SearchDTO searchQuery) {
+        List<Advertisement> advertisements = advertisementRepository.findBySubstring(searchQuery.getSubstring());
+        List<AdvertisementDTO> searchedAdvertisements = new ArrayList<>();
+        for (Advertisement advertisement : advertisements) {
+            searchedAdvertisements.add(AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisement));
+        }
+        return searchedAdvertisements;
     }
 }
