@@ -3,6 +3,7 @@ package ru.tinkoff.rentall.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.tinkoff.rentall.dto.LoginDTO;
 import ru.tinkoff.rentall.dto.UserDTO;
 import ru.tinkoff.rentall.entity.User;
 import ru.tinkoff.rentall.mapper.UserMapper;
@@ -20,6 +21,14 @@ public class AuthService {
             String encodedPassword = passwordEncoder.encode(user.getUserPassword());
             user.setUserPassword(encodedPassword);
             return userRepository.save(user);
+        }
+        return null;
+    }
+
+    public String getUserFullName(LoginDTO loginDTO) {
+        User user = userRepository.findById(loginDTO.getLogin()).orElse(null);
+        if (user != null) {
+            return user.getUserFullName();
         }
         return null;
     }
