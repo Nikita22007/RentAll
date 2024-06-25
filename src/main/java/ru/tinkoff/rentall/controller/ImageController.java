@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.rentall.dto.ImageDTO;
+import ru.tinkoff.rentall.dto.ImageIDDTO;
 import ru.tinkoff.rentall.entity.Image;
 import ru.tinkoff.rentall.service.ImageService;
 
@@ -19,12 +20,12 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping(value = "/image_upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> uploadImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ImageIDDTO> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             Image image = new Image();
             image.setImgName(file.getBytes());
             imageService.save(image);
-            return ResponseEntity.status(200).build();
+            return ResponseEntity.status(200).body(new ImageIDDTO(image.getImgId()));
         } catch (IOException e) {
             return ResponseEntity.status(400).build();
         }
