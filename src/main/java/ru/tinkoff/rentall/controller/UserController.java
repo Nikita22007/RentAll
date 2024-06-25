@@ -1,5 +1,6 @@
 package ru.tinkoff.rentall.controller;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,19 +19,21 @@ public class UserController {
     }
 
     @PostMapping("/registrate_user")
-    public ResponseEntity<Void> setUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<Void> setUser(@RequestBody UserDTO userDTO) throws BadRequestException{
         if (userService.saveUser(userDTO) != null) {
             return ResponseEntity.status(201).build();
+        } else {
+            throw new BadRequestException("Registrate failed");
         }
-        return ResponseEntity.status(400).build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserFullNameDTO> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<UserFullNameDTO> login(@RequestBody LoginDTO loginDTO) throws BadRequestException{
         UserFullNameDTO fullName = userService.logInUser(loginDTO);
         if (fullName != null) {
             return ResponseEntity.status(200).body(fullName);
+        }else {
+            throw new BadRequestException("User not found");
         }
-        return ResponseEntity.status(400).build();
     }
 }
