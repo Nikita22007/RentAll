@@ -8,6 +8,6 @@ import ru.tinkoff.rentall.entity.Advertisement;
 import java.util.List;
 
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Integer> {
-    @Query(value = "SELECT * FROM advertisements a WHERE a.adv_name LIKE CONCAT('%', :substring, '%')", nativeQuery = true)
+    @Query(value = "SELECT * FROM advertisements a WHERE LOWER(a.adv_name) LIKE LOWER(CONCAT('%', :substring, '%'))", nativeQuery = true)
     List<Advertisement> findBySubstring(@Param("substring") String substring);
 }
