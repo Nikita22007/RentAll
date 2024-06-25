@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter @Setter
 public class UserReviewDTO {
     private String userLogin;
-    private int targetId;
+    private String targetLogin;
     private int feedback;
 }
