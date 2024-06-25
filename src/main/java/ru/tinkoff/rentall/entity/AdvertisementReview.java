@@ -3,10 +3,7 @@ package ru.tinkoff.rentall.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "adv_reviews")
@@ -15,8 +12,10 @@ public class AdvertisementReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reviewId;
-    private String userLogin;
-    private int postId;
+    @OneToOne @JoinColumn(name = "user_login", referencedColumnName = "login")
+    private User user;
+    @OneToOne @JoinColumn(name = "adv_id", referencedColumnName = "adv_id")
+    private Advertisement advertisement;
     private String feedback;
     private int mark;
     private LocalDateTime postTime;

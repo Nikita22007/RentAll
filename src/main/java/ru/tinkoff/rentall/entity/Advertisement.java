@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class Advertisement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "adv_id")
     private Integer advId;
     private String advName;
     private String description;
