@@ -2,10 +2,12 @@ package ru.tinkoff.rentall.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.tinkoff.rentall.dto.AdBoardDTO;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
 import ru.tinkoff.rentall.dto.SearchDTO;
 import ru.tinkoff.rentall.entity.Advertisement;
 import ru.tinkoff.rentall.entity.User;
+import ru.tinkoff.rentall.mapper.AdBoardMapper;
 import ru.tinkoff.rentall.mapper.AdvertisementMapper;
 import ru.tinkoff.rentall.repository.AdvertisementRepository;
 import ru.tinkoff.rentall.repository.UserRepository;
@@ -34,13 +36,13 @@ public class AdvertisementService {
         advertisementRepository.delete(AdvertisementMapper.INSTANCE.toAdvertisement(advertisementDTO));
     }
 
-    public List<AdvertisementDTO> getAdvertisementBoard() {
+    public List<AdBoardDTO> getAdvertisementBoard() {
         List<Advertisement> advertisementBoard = advertisementRepository.findAll();
-        List<AdvertisementDTO> advertisementDTOList = new ArrayList<>();
+        List<AdBoardDTO> adBoard = new ArrayList<>();
         for (Advertisement advertisement : advertisementBoard) {
-            advertisementDTOList.add(AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisement));
+            adBoard.add(AdBoardMapper.INSTANCE.toAdBoardDTO(advertisement));
         }
-        return advertisementDTOList;
+        return adBoard;
     }
 
     public List<AdvertisementDTO> search(SearchDTO searchQuery) {
