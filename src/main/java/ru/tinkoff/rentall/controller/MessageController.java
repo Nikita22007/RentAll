@@ -2,7 +2,9 @@ package ru.tinkoff.rentall.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.rentall.dto.MessageDTO;
 import ru.tinkoff.rentall.service.MessageService;
 
@@ -16,4 +18,5 @@ public class MessageController {
         messageService.send(messageDTO);
         return ResponseEntity.status(201).body(messageDTO);
     }
+
 }
