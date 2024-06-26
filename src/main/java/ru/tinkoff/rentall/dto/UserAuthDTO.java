@@ -8,5 +8,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserAuthDTO {
     private String token;
+    private String login;
     private String userFullName;
 }

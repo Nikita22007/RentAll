@@ -32,8 +32,9 @@ public class UserController {
         userValidator.validate(user, bindingResult);
         authService.saveUser(userDTO);
         String token = jwtUtil.generateToken(user.getLogin());
+        String login = userDTO.getLogin();
         String userFullName =  userDTO.getUserFullName();
-        return ResponseEntity.status(200).body(new UserAuthDTO(token, userFullName));
+        return ResponseEntity.status(200).body(new UserAuthDTO(token, login, userFullName));
     }
 
     @PostMapping("/login")
@@ -48,7 +49,8 @@ public class UserController {
             return ResponseEntity.status(400).build();
         }
         String generatedToken = jwtUtil.generateToken(loginDTO.getLogin());
+        String login = loginDTO.getLogin();
         String userFullName = authService.getUserFullName(loginDTO);
-        return ResponseEntity.status(200).body(new UserAuthDTO(generatedToken, userFullName));
+        return ResponseEntity.status(200).body(new UserAuthDTO(generatedToken, login, userFullName));
     }
 }
