@@ -12,6 +12,7 @@ import ru.tinkoff.rentall.repository.UserReviewRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,30 @@ public class UserReviewService {
             userReviewDTOList.add(UserReviewMapper.INSTANCE.toUserReviewDTO(userReview));
         }
         return userReviewDTOList;
+    }
+
+    public List<UserReviewDTO> getUserReviewsByTargetLogin(String targetLogin) {
+        List<UserReview> userReviews = userReviewRepository.findByTargetLogin_Login(targetLogin);
+        return userReviews.stream()
+                .map(UserReviewMapper.INSTANCE::toUserReviewDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserReviewDTO> getUserReviewsByUserLogin(String userLogin) {
+        List<UserReview> userReviews = userReviewRepository.findByUserLogin_Login(userLogin);
+        return userReviews.stream()
+                .map(UserReviewMapper.INSTANCE::toUserReviewDTO)
+                .collect(Collectors.toList());
+    }
+
+    public double getAverageFeedbackByTargetLogin(String targetLogin) {
+        List<UserReview> userReviews = userReviewRepository.findByTargetLogin_Login(targetLogin);
+        double averageFeedback = userReviews.stream()
+                .mapToInt(UserReview::getFeedback)
+                .average()
+                .orElse(0.0);
+        // Округление до двух знаков после запятой
+        return Math.round(averageFeedback * 100.0) / 100.0;
     }
 
     public UserReview createUserReview(UserReviewDTO userReviewDTO) {
