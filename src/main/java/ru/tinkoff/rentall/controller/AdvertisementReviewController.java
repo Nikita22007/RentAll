@@ -2,10 +2,7 @@ package ru.tinkoff.rentall.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.rentall.dto.AdvertisementReviewDTO;
 import ru.tinkoff.rentall.service.AdvertisementReviewService;
 
@@ -26,6 +23,24 @@ public class AdvertisementReviewController {
     public ResponseEntity<List<AdvertisementReviewDTO>> getAdvertisementReview() {
         List<AdvertisementReviewDTO> advertisementReviewDTOList = advertisementReviewService.getAll();
         return ResponseEntity.status(200).body(advertisementReviewDTOList);
+    }
+
+    @GetMapping("/advertisement_review/advertisement/{advertisementId}")
+    public ResponseEntity<List<AdvertisementReviewDTO>> getReviewsByAdvertisementId(@PathVariable int advertisementId) {
+        List<AdvertisementReviewDTO> reviews = advertisementReviewService.getReviewsByAdvertisementId(advertisementId);
+        return ResponseEntity.status(200).body(reviews);
+    }
+
+    @GetMapping("/advertisement_review/advertisement/{advertisementId}/average_mark")
+    public ResponseEntity<Double> getAverageMarkByAdvertisementId(@PathVariable int advertisementId) {
+        double averageMark = advertisementReviewService.getAverageMarkByAdvertisementId(advertisementId);
+        return ResponseEntity.status(200).body(averageMark);
+    }
+
+    @GetMapping("/advertisement_review/user/{userLogin}")
+    public ResponseEntity<List<AdvertisementReviewDTO>> getReviewsByUserLogin(@PathVariable String userLogin) {
+        List<AdvertisementReviewDTO> reviews = advertisementReviewService.getReviewsByUserLogin(userLogin);
+        return ResponseEntity.status(200).body(reviews);
     }
 
 }
