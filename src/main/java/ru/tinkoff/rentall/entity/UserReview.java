@@ -17,5 +17,6 @@ public class UserReview {
     private User userLogin;
     @OneToOne @JoinColumn(name = "target_login", referencedColumnName = "login")
     private User targetLogin;
-    private int feedback;
+    private String feedback;
+    private int mark;
 }

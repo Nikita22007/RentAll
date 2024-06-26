@@ -7,5 +7,6 @@ import lombok.Setter;
 public class UserReviewDTO {
     private String userLogin;
     private String targetLogin;
-    private int feedback;
+    private String feedback;
+    private int mark;
 }

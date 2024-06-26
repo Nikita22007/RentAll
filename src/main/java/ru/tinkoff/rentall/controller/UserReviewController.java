@@ -3,8 +3,6 @@ package ru.tinkoff.rentall.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.rentall.dto.AdvertisementDTO;
-import ru.tinkoff.rentall.dto.AdvertisementReviewDTO;
 import ru.tinkoff.rentall.dto.UserReviewDTO;
 import ru.tinkoff.rentall.service.UserReviewService;
 
@@ -40,10 +38,10 @@ public class UserReviewController {
         return ResponseEntity.status(404).build();
     }
 
-    @GetMapping("/user_review/target/{targetLogin}/average_feedback")
-    public ResponseEntity<Double> getAverageFeedbackByTargetLogin(@PathVariable String targetLogin) {
-        double averageFeedback = userReviewService.getAverageFeedbackByTargetLogin(targetLogin);
-        return ResponseEntity.status(200).body(averageFeedback);
+    @GetMapping("/user_review/target/{targetLogin}/average_mark")
+    public ResponseEntity<Double> getAverageMarkByTargetLogin(@PathVariable String targetLogin) {
+        double averageMark = userReviewService.getAverageMarkByTargetLogin(targetLogin);
+        return ResponseEntity.status(200).body(averageMark);
     }
 
     @PostMapping("/create_user_review")

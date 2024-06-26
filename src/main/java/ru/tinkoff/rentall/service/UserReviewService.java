@@ -43,14 +43,14 @@ public class UserReviewService {
                 .collect(Collectors.toList());
     }
 
-    public double getAverageFeedbackByTargetLogin(String targetLogin) {
+    public double getAverageMarkByTargetLogin(String targetLogin) {
         List<UserReview> userReviews = userReviewRepository.findByTargetLogin_Login(targetLogin);
-        double averageFeedback = userReviews.stream()
-                .mapToInt(UserReview::getFeedback)
+        double averageMark = userReviews.stream()
+                .mapToInt(UserReview::getMark)
                 .average()
                 .orElse(0.0);
         // Округление до двух знаков после запятой
-        return Math.round(averageFeedback * 100.0) / 100.0;
+        return Math.round(averageMark * 100.0) / 100.0;
     }
 
     public UserReview createUserReview(UserReviewDTO userReviewDTO) {

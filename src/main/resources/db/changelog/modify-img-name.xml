@@ -58,4 +58,14 @@
                                  referencedColumnNames="cat_name"/>
     </changeSet>
 
+    <changeSet id="add-mark-to-user-reviews" author="g3r1ch">
+        <addColumn tableName="user_reviews">
+            <column name="mark" type="integer"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="change-feedback-to-text" author="g3r1ch">
+        <modifyDataType tableName="user_reviews" columnName="feedback" newDataType="text"/>
+    </changeSet>
+
 </databaseChangeLog>
