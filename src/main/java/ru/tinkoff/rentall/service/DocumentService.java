@@ -22,7 +22,7 @@ public class DocumentService {
     private final UserRepository userRepository;
     private final AdvertisementRepository advertisementRepository;
 
-    public byte[] generateDocuments(DocumentDTO documentDTO) throws IOException {
+    public String generateDocuments(DocumentDTO documentDTO) throws IOException {
         Optional<User> lesseeUserOpt = userRepository.findById(documentDTO.getSessionUserLogin());
         Optional<Advertisement> adOpt = advertisementRepository.findById(documentDTO.getAdvId());
 
@@ -58,8 +58,8 @@ public class DocumentService {
             String outputName = "src/main/resources/documents/" + lessorName + "_" + lesseeName + "_" + productName + ".docx";
             docGen.createDocxFromTemplate("src/main/resources/documents/template.docx", outputName, replacements);
 
-            return Files.readAllBytes(Paths.get(outputName));
+            return outputName;
         }
-        return new byte[0];
+        return "error";
     }
 }
