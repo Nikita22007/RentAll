@@ -3,6 +3,7 @@ package ru.tinkoff.rentall.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.rentall.dto.AdBoardDTO;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
 import ru.tinkoff.rentall.dto.SearchDTO;
 import ru.tinkoff.rentall.service.AdvertisementService;
@@ -30,10 +31,10 @@ public class AdvertisementController {
     }
 
     @GetMapping("/advertisement_board")
-    public ResponseEntity<List<AdvertisementDTO>> getAdvertisementBoard() {
-        List<AdvertisementDTO> advertisementDTOList = advertisementService.getAdvertisementBoard();
-        if (advertisementDTOList != null) {
-            return ResponseEntity.status(200).body(advertisementDTOList);
+    public ResponseEntity<List<AdBoardDTO>> getAdvertisementBoard() {
+        List<AdBoardDTO> board = advertisementService.getAdvertisementBoard();
+        if (board != null) {
+            return ResponseEntity.status(200).body(board);
         }
         return ResponseEntity.status(400).build();
     }
