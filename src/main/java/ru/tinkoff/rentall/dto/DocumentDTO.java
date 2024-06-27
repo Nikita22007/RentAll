@@ -7,6 +7,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DocumentDTO {
-    private int advId;
-    private String sessionUserLogin;
+    private int rentId;
 }
