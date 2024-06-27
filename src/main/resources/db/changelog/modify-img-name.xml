@@ -76,4 +76,29 @@
                                  referencedColumnNames="chat_id"/>
     </changeSet>
 
+    <changeSet id="create-rent-history" author="g3r1ch">
+        <createTable tableName="rent_history">
+            <column name="rent_id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="adv_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_rent_adv_id" references="advertisements(adv_id)"/>
+            </column>
+            <column name="start_date_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add-lessee-login-column" author="g3r1ch">
+        <addColumn tableName="rent_history">
+            <column name="lessee_login" type="VARCHAR(30)">
+                <constraints nullable="false" foreignKeyName="fk_rent_lessee_login" references="users(login)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
