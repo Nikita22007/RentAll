@@ -42,5 +42,4 @@ public class ImageController {
         }
         return ResponseEntity.status(400).build();
     }
-
 }
