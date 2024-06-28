@@ -105,4 +105,76 @@
         <dropColumn tableName="advertisements" columnName="rent_time"/>
     </changeSet>
 
+    <changeSet id="add-cascade-delete-to-fk-user-reviews-user-login" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="user_reviews" constraintName="fk_user_login"/>
+        <addForeignKeyConstraint baseTableName="user_reviews" baseColumnNames="user_login" constraintName="fk_user_login" referencedTableName="users"
+                                 referencedColumnNames="login" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-user-reviews-target-login" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="user_reviews" constraintName="fk_target_login"/>
+        <addForeignKeyConstraint baseTableName="user_reviews" baseColumnNames="target_login" constraintName="fk_target_login" referencedTableName="users"
+                                 referencedColumnNames="login" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-chats-user-one-login" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="chats" constraintName="fk_user_one_login"/>
+        <addForeignKeyConstraint baseTableName="chats" baseColumnNames="user_one_login" constraintName="fk_user_one_login" referencedTableName="users"
+                                 referencedColumnNames="login" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-chats-user-two-login" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="chats" constraintName="fk_user_two_login"/>
+        <addForeignKeyConstraint baseTableName="chats" baseColumnNames="user_two_login" constraintName="fk_user_two_login" referencedTableName="users"
+                                 referencedColumnNames="login" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-chat-id" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="messages" constraintName="fk_chat_id"/>
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="chat_id" constraintName="fk_chat_id" referencedTableName="chats"
+                                 referencedColumnNames="chat_id" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-messages-chat-id" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="messages" constraintName="fk_chat_id"/>
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="chat_id" constraintName="fk_chat_id" referencedTableName="chats"
+                                 referencedColumnNames="chat_id" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-advertisements-user-login" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="advertisements" constraintName="fk_adv_user_login"/>
+        <addForeignKeyConstraint baseTableName="advertisements" baseColumnNames="user_login" constraintName="fk_adv_user_login" referencedTableName="users"
+                                 referencedColumnNames="login" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-advertisements-category-name" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="advertisements" constraintName="fk_adv_cat_name"/>
+        <addForeignKeyConstraint baseTableName="advertisements" baseColumnNames="category_name" constraintName="fk_adv_cat_name" referencedTableName="categories"
+                                 referencedColumnNames="cat_name" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-adv-reviews-user-login" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="adv_reviews" constraintName="fk_adv_rev_user_login"/>
+        <addForeignKeyConstraint baseTableName="adv_reviews" baseColumnNames="user_login" constraintName="fk_adv_rev_user_login" referencedTableName="users"
+                                 referencedColumnNames="login" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-adv-reviews-adv-id" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="adv_reviews" constraintName="fk_adv_rev_adv_id"/>
+        <addForeignKeyConstraint baseTableName="adv_reviews" baseColumnNames="adv_id" constraintName="fk_adv_rev_adv_id" referencedTableName="advertisements"
+                                 referencedColumnNames="adv_id" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-rent-history-adv-id" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="rent_history" constraintName="fk_rent_adv_id"/>
+        <addForeignKeyConstraint baseTableName="rent_history" baseColumnNames="adv_id" constraintName="fk_rent_adv_id" referencedTableName="advertisements"
+                                 referencedColumnNames="adv_id" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="add-cascade-delete-to-fk-rent-history-lessee-login" author="g3r1ch">
+        <dropForeignKeyConstraint baseTableName="rent_history" constraintName="fk_rent_lessee_login"/>
+        <addForeignKeyConstraint baseTableName="rent_history" baseColumnNames="lessee_login" constraintName="fk_rent_lessee_login" referencedTableName="users"
+                                 referencedColumnNames="login" onDelete="CASCADE"/>
+    </changeSet>
+
 </databaseChangeLog>
