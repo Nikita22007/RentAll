@@ -177,4 +177,23 @@
                                  referencedColumnNames="login" onDelete="CASCADE"/>
     </changeSet>
 
+    <changeSet id="create-favorites-table" author="g3r1ch">
+        <createTable tableName="favorites">
+            <column name="adv_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_login" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="adv_id, user_login" constraintName="pk_favorites" tableName="favorites"/>
+
+        <addForeignKeyConstraint baseTableName="favorites" baseColumnNames="adv_id" constraintName="fk_favorites_adv_id"
+                                 referencedTableName="advertisements" referencedColumnNames="adv_id" onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseTableName="favorites" baseColumnNames="user_login" constraintName="fk_favorites_user_login"
+                                 referencedTableName="users" referencedColumnNames="login" onDelete="CASCADE"/>
+    </changeSet>
+
 </databaseChangeLog>

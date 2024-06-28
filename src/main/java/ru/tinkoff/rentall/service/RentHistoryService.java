@@ -2,15 +2,11 @@ package ru.tinkoff.rentall.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.rentall.dto.AdvertisementReviewDTO;
 import ru.tinkoff.rentall.dto.RentHistoryDTO;
 import ru.tinkoff.rentall.entity.Advertisement;
-import ru.tinkoff.rentall.entity.AdvertisementReview;
 import ru.tinkoff.rentall.entity.RentHistory;
 import ru.tinkoff.rentall.entity.User;
-import ru.tinkoff.rentall.mapper.AdvertisementReviewMapper;
 import ru.tinkoff.rentall.mapper.RentHistoryMapper;
-import ru.tinkoff.rentall.mapper.UserReviewMapper;
 import ru.tinkoff.rentall.repository.AdvertisementRepository;
 import ru.tinkoff.rentall.repository.RentHistoryRepository;
 import ru.tinkoff.rentall.repository.UserRepository;
