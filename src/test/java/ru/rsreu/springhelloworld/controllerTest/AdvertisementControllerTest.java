@@ -102,7 +102,6 @@ public class AdvertisementControllerTest {
                 .andExpect(jsonPath("$.advName").value(adv.getAdvName()))
                 .andExpect(jsonPath("$.description").value(adv.getDescription()))
                 .andExpect(jsonPath("$.timeUnit").value(adv.getTimeUnit()))
-                .andExpect(jsonPath("$.rentTime").value(adv.getRentTime()))
                 .andExpect(jsonPath("$.barterAllowed").value(adv.isBarterAllowed()))
                 .andExpect(jsonPath("$.userLogin").value(adv.getUser().getLogin()))
                 .andExpect(jsonPath("$.imageId").value(adv.getImageId()))

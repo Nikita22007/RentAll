@@ -14,7 +14,6 @@ public class AdvertisementTestEntity {
         adv.setAdvName("Advertisement");
         adv.setDescription("Expensive auto");
         adv.setTimeUnit("hour");
-        adv.setRentTime(12);
         adv.setBarterAllowed(true);
         adv.setUser(UserTestEntity.getUser());
         adv.setAdvPrice("5000");

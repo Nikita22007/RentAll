@@ -101,4 +101,8 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="delete-rent-time-column-from-advertisement" author="g3r1ch">
+        <dropColumn tableName="advertisements" columnName="rent_time"/>
+    </changeSet>
+
 </databaseChangeLog>
