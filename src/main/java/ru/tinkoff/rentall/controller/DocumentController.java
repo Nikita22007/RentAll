@@ -27,7 +27,7 @@ public class DocumentController {
         try {
             String outputName = documentService.generateDocuments(documentDTO);
             byte[] documentBytes = Files.readAllBytes(Paths.get(outputName));
-            if ((documentBytes.length > 0) && (outputName != "error")) {
+            if ((documentBytes.length > 0) && (!outputName.equals("error"))) {
                 String outputNameCleaned = outputName.replace("src/main/resources/documents/", "");
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
