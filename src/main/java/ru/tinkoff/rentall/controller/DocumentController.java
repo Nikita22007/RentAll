@@ -1,7 +1,6 @@
 package ru.tinkoff.rentall.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@RestController @RequiredArgsConstructor
+@RestController
+@RequiredArgsConstructor
 public class DocumentController {
 
     private final DocumentService documentService;
@@ -27,7 +27,7 @@ public class DocumentController {
         try {
             String outputName = documentService.generateDocuments(documentDTO);
             byte[] documentBytes = Files.readAllBytes(Paths.get(outputName));
-            if ((documentBytes.length > 0) && (outputName != "error")) {
+            if ((documentBytes.length > 0) && (!outputName.equals("error"))) {
                 String outputNameCleaned = outputName.replace("src/main/resources/documents/", "");
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

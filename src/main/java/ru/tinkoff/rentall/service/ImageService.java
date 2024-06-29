@@ -1,6 +1,7 @@
 package ru.tinkoff.rentall.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.rentall.dto.ImageDTO;
 import ru.tinkoff.rentall.entity.Image;
@@ -22,5 +23,10 @@ public class ImageService {
             return ImageMapper.INSTANCE.toImageDTO(searchedImage);
         }
         return null;
+    }
+
+    @Scheduled(cron = "0 0 * * * ?")
+    public void deleteUnusedImages() {
+        imageRepository.deleteUnusedImages();
     }
 }

@@ -10,7 +10,6 @@ public class AdvertisementDTO {
     private String advName;
     private String description;
     private String timeUnit;
-    private int rentTime;
     private boolean isBarterAllowed;
     private String advPrice;
     private String userLogin;

@@ -16,7 +16,6 @@ public class Advertisement {
     private String advName;
     private String description;
     private String timeUnit;
-    private int rentTime;
     private boolean isBarterAllowed;
     private String advPrice;
     @OneToOne @JoinColumn(name = "user_login", referencedColumnName = "login")
