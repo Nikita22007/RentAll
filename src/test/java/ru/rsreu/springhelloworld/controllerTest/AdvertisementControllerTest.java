@@ -93,7 +93,7 @@ public class AdvertisementControllerTest {
     }
 
     @Test
-    void getAdvertisement() throws Exception {
+    void getAdvertisementById_successful() throws Exception {
         AdvertisementDTO advDTO = AdvertisementMapper.INSTANCE.toAdvertisementDTO(adv);
         //System.out.print(objectMapper.writeValueAsString(advDTO));
         Mockito.doReturn(Optional.of(adv)).when(advertisementRepository).findById(0);
@@ -108,6 +108,17 @@ public class AdvertisementControllerTest {
                 .andExpect(jsonPath("$.imageId").value(adv.getImageId()))
                 .andExpect(jsonPath("$.categoryName").value(adv.getCategoryName()));
                 //.andExpect(jsonPath("$.creationTime").value(objectMapper.writeValueAsString(adv.getCreationTime())));
+        verify(advertisementRepository, times(1)).findById(0);
+    }
+
+    @Test
+    void getAdvertisementById_notSuccessful() throws Exception {
+        AdvertisementDTO advDTO = AdvertisementMapper.INSTANCE.toAdvertisementDTO(adv);
+        //System.out.print(objectMapper.writeValueAsString(advDTO));
+        Mockito.doReturn(Optional.empty()).when(advertisementRepository).findById(0);
+        mockMvc.perform(get("/advertisement/{adv_id}", 0L))
+                .andExpect(status().is4xxClientError());
+        //.andExpect(jsonPath("$.creationTime").value(objectMapper.writeValueAsString(adv.getCreationTime())));
         verify(advertisementRepository, times(1)).findById(0);
     }
 
@@ -196,9 +207,6 @@ public class AdvertisementControllerTest {
                         dtoList.get(1).getImageId(), dtoList.get(2).getImageId(), dtoList.get(3).getImageId())))
                 .andExpect(jsonPath("$[*].categoryName", containsInAnyOrder(dtoList.get(0).getCategoryName(),
                         dtoList.get(1).getCategoryName(), dtoList.get(2).getCategoryName(), dtoList.get(3).getCategoryName())));
-//                .andExpect(jsonPath("$.creationTime", containsInAnyOrder(dtoList.get(0).getCreationTime(),
-//                        dtoList.get(1).getCreationTime(), dtoList.get(2).getCreationTime(),
-//                        dtoList.get(3).getCreationTime())));
     }
 
     @Test
