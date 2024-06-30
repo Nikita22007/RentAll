@@ -20,8 +20,8 @@ public class FavoritesService {
         favoritesRepository.save(favorites);
     }
 
-    public List<FavoritesDTO> getFavorites() {
-        List<Favorites> favorites = favoritesRepository.findAll();
+    public List<FavoritesDTO> getFavorites(String login) {
+        List<Favorites> favorites = favoritesRepository.findByUserLogin(login);
         List<FavoritesDTO> favoritesDTOS = new ArrayList<>();
         for (Favorites favorite : favorites) {
             favoritesDTOS.add(FavoritesMapper.INSTANCE.toFavoritesDTO(favorite));

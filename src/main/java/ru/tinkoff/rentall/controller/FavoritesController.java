@@ -2,10 +2,7 @@ package ru.tinkoff.rentall.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.rentall.dto.FavoritesDTO;
 import ru.tinkoff.rentall.service.FavoritesService;
 
@@ -22,9 +19,9 @@ public class FavoritesController {
         return ResponseEntity.status(201).build();
     }
 
-    @GetMapping("/favorites")
-    public ResponseEntity<List<FavoritesDTO>> getFavorites() {
-        List<FavoritesDTO> favoritesDTOS = favoritesService.getFavorites();
+    @GetMapping("/favorites/{login}")
+    public ResponseEntity<List<FavoritesDTO>> getFavorites(@PathVariable String login) {
+        List<FavoritesDTO> favoritesDTOS = favoritesService.getFavorites(login);
         return ResponseEntity.status(200).body(favoritesDTOS);
     }
 }
