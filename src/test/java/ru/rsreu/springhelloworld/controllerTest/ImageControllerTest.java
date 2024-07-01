@@ -3,7 +3,6 @@ package ru.rsreu.springhelloworld.controllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,15 +27,16 @@ import ru.tinkoff.rentall.service.ImageService;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Disabled
 @Import({ImageController.class, ImageService.class})
 @ExtendWith(SpringExtension.class)
 public class ImageControllerTest {
@@ -75,20 +74,42 @@ public class ImageControllerTest {
 
     @Test
     void sendMessageTest_successful() throws Exception {
-        byte[] inputArray = "Test String".getBytes();
-//        MockMultipartFile mockMultipartFile = new MockMultipartFile("tempFileName",inputArray);
-//        Assertions.assertFalse(mockMultipartFile.isEmpty());
-//        Assertions.assertArrayEquals(inputArray, mockMultipartFile.getBytes());
-//        Assertions.assertEquals(inputArray.length,mockMultipartFile.getSize());
-//        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("src/test/java/ru/rsreu/springhelloworld/controllerTest/test.png");
-        MockMultipartFile testImage = new MockMultipartFile("file", "test.png", "image/png", inputArray);
+        InputStream inputStream = ImageControllerTest.class.getResourceAsStream("/Images/test.jpg");
+        MockMultipartFile testImage = new MockMultipartFile("file", "test.jpg", "image/jpg", inputStream);
         imageDTO.setImgName(testImage.getBytes());
         Image image = ImageMapper.INSTANCE.toImage(imageDTO);
-        String imageJson = objectMapper.writeValueAsString(imageDTO);
         Mockito.doReturn(image).when(imageRepository).save(ArgumentMatchers.any());
-        mockMvc.perform(post("/image_upload").contentType(MediaType.MULTIPART_FORM_DATA_VALUE).content(imageJson))
-                .andExpect(status().isCreated());
+        mockMvc.perform(multipart("/image_upload").file(testImage))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.imgId").value(image.getImgId()));
         verify(imageRepository, times(1)).save(ArgumentMatchers.any());
+    }
+
+    @Test
+    void sendMessageTest_notSuccessful() throws Exception {
+        InputStream inputStream = ImageControllerTest.class.getResourceAsStream("/Images/test.jpg");
+        mockMvc.perform(multipart("/image_upload", inputStream))
+                .andExpect(status().is(400));
+        verify(imageRepository, times(0)).save(ArgumentMatchers.any());
+    }
+
+    @Test
+    void imageLoad_successful() throws Exception {
+        InputStream inputStream = ImageControllerTest.class.getResourceAsStream("/Images/test.jpg");
+        MockMultipartFile testImage = new MockMultipartFile("file", "test.jpg", "image/jpg", inputStream);
+        imageDTO.setImgName(testImage.getBytes());
+        Image image = ImageMapper.INSTANCE.toImage(imageDTO);
+        Mockito.doReturn(Optional.of(image)).when(imageRepository).findById(ArgumentMatchers.any());
+        mockMvc.perform(get("/image_load/{id}", 0)).andDo(print())
+                .andExpect(status().isOk());
+        verify(imageRepository, times(1)).findById(ArgumentMatchers.any());
+    }
+
+    @Test
+    void imageLoad_notSuccessful() throws Exception {
+        Mockito.doReturn(Optional.empty()).when(imageRepository).findById(ArgumentMatchers.any());
+        mockMvc.perform(get("/image_load/{id}", 0))
+                .andExpect(status().is(400));
+        verify(imageRepository, times(1)).findById(ArgumentMatchers.any());
     }
 
 }
