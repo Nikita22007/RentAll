@@ -196,4 +196,11 @@
                                  referencedTableName="users" referencedColumnNames="login" onDelete="CASCADE"/>
     </changeSet>
 
+    <changeSet id="add-is-rented-column" author="g3r1ch">
+        <addColumn tableName="advertisements">
+            <column name="is_rented" type="BOOLEAN">
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

@@ -23,4 +23,5 @@ public class Advertisement {
     private int imageId;
     private String categoryName;
     private LocalDateTime creationTime;
+    private Boolean isRented;
 }
