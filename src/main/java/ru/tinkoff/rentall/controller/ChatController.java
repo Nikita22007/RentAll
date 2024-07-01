@@ -4,18 +4,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.rentall.dto.ChatDTO;
+import ru.tinkoff.rentall.dto.MessageDTO;
 import ru.tinkoff.rentall.service.ChatService;
+import ru.tinkoff.rentall.service.MessageService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+    private final MessageService messageService;
 
     @GetMapping("/chat/{id}")
-    public ResponseEntity<ChatDTO> getChat(@PathVariable int id) {
+    public ResponseEntity<List<MessageDTO>> getChat(@PathVariable int id) {
         ChatDTO chatDTO = chatService.getChatById(id);
         if (chatDTO != null) {
-            return ResponseEntity.ok().body(chatDTO);
+            List<MessageDTO> messages = messageService.getMessages(chatDTO);
+            return ResponseEntity.ok().body(messages);
         }
         return ResponseEntity.status(400).build();
     }
