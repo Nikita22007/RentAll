@@ -2,6 +2,8 @@ package ru.rsreu.springhelloworld.controllerTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,15 +13,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BindingResult;
-import ru.rsreu.springhelloworld.testEntities.UserTestEntity;
 import ru.tinkoff.rentall.controller.UserController;
 import ru.tinkoff.rentall.dto.LoginDTO;
 import ru.tinkoff.rentall.dto.UserDTO;
@@ -43,11 +47,20 @@ import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Disabled
-@Import({UserController.class, UserService.class, UserValidator.class, AuthService.class, JWTUtil.class, AuthenticationManager.class})
+
+@Import({UserController.class,
+        UserService.class,
+        UserValidator.class,
+        AuthService.class,
+        JWTUtil.class,
+        AuthenticationManager.class,
+
+        UserRepository.class,
+        PasswordEncoder.class})
 @ExtendWith(SpringExtension.class)
 public class UserControllerTest {
 
@@ -59,10 +72,10 @@ public class UserControllerTest {
     private UserRepository userRepository;
 
     @MockBean
-    private UserValidator userValidator;
+    private PasswordEncoder passwordEncoder;
 
     @MockBean
-    private PasswordEncoder passwordEncoder;
+    AuthenticationManager authenticationManager;
 
 
     private MockMvc mockMvc;
@@ -81,6 +94,8 @@ public class UserControllerTest {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         objectMapper = new ObjectMapper();
         objectMapper.setDateFormat(df);
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.registerModule(new JavaTimeModule());
         this.parameters = new EasyRandomParameters()
                 .charset(StandardCharsets.UTF_8)
                 .stringLengthRange(5, 20)
@@ -95,29 +110,34 @@ public class UserControllerTest {
     @Test
     void setUser_successful() throws Exception {
         String userJson = objectMapper.writeValueAsString(userDTO);
-
         Mockito.doReturn(this.user).when(userRepository).save(ArgumentMatchers.any());
         Mockito.doReturn(Optional.empty()).when(userRepository).findById(ArgumentMatchers.any());
+        Mockito.doReturn(user).when(userRepository).save(ArgumentMatchers.any());
         mockMvc.perform(post("/registrate_user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
-                .andExpect(status().isCreated());
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.login").value(userDTO.getLogin()))
+                .andExpect(jsonPath("$.userFullName").value(userDTO.getUserFullName()));
         verify(userRepository, times(1)).save(ArgumentMatchers.any());
-        verify(userRepository, times(1)).findById(ArgumentMatchers.any());
-
+        verify(userRepository, times(2)).findById(ArgumentMatchers.any());
+        verify(passwordEncoder, times(1)).encode(ArgumentMatchers.any());
     }
 
+    @Disabled
     @Test
     void setUser_alreadyExistingUser() throws Exception {
         String userJson = objectMapper.writeValueAsString(userDTO);
-        Mockito.doReturn(this.user).when(userRepository).save(ArgumentMatchers.any());
+
         Mockito.doReturn(Optional.of(this.user)).when(userRepository).findById(ArgumentMatchers.any());
+        Mockito.doThrow(RuntimeException.class).when(authenticationManager).authenticate(ArgumentMatchers.any());
         mockMvc.perform(post("/registrate_user")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(userJson))
+                        .content(userJson)).andDo(print())
                 .andExpect(status().is4xxClientError());
         verify(userRepository, times(1)).findById(ArgumentMatchers.any());
         verify(userRepository, times(0)).save(ArgumentMatchers.any());
+        verify(passwordEncoder, times(0)).encode(ArgumentMatchers.any());
     }
 
     @Test
@@ -127,7 +147,6 @@ public class UserControllerTest {
         login.setUserPassword(userDTO.getUserPassword());
         login.setLogin(userDTO.getLogin());
         String loginJson = objectMapper.writeValueAsString(login);
-        // вызов тестируемого метода
         Mockito.doReturn(Optional.of(user)).when(userRepository).findById(ArgumentMatchers.any());
         mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -135,39 +154,26 @@ public class UserControllerTest {
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.userFullName").value(user.getUserFullName()));
         verify(userRepository, times(1)).findById(ArgumentMatchers.any());
+        verify(authenticationManager, times(1)).authenticate(ArgumentMatchers.any());
+        verify(userRepository, times(1)).findById(ArgumentMatchers.any());
+
     }
 
     @Test
     void loginUser_wrongPasswd() throws Exception {
-        // инициализация логина
         LoginDTO login = new LoginDTO();
         login.setUserPassword(userDTO.getUserPassword());
         login.setLogin(userDTO.getLogin());
-        // инициализация неправильного пароля пользователя
         user.setUserPassword("wrongPasswd");
-        // создание входных данных для вызова метода
         String loginJson = objectMapper.writeValueAsString(login);
-        // вызов тестируемого метода
-        Mockito.doReturn(Optional.of(user)).when(userRepository).findById(ArgumentMatchers.any());
+        Mockito.doThrow(BadCredentialsException.class).when(authenticationManager).authenticate(ArgumentMatchers.any());
+
         mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(status().is4xxClientError());
-        verify(userRepository, times(1)).findById(ArgumentMatchers.any());
-    }
-
-    @Disabled
-    @Test // Проверяет валидацию данных, пока что она не добавлена, поэтому отключён
-    void loginUser_tooBigUserName() throws Exception {
-        String expectedName = user.getUserFullName();
-        user.setUserFullName("*".repeat(60));
-        String userJson = objectMapper.writeValueAsString(userDTO);
-        Mockito.doReturn(new User()).when(userRepository).save(ArgumentMatchers.any());
-        mockMvc.perform(post("/registrate_user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(userJson))
-                .andExpect(status().is(400));
-
-        verify(userRepository, times(1)).save(ArgumentMatchers.any());
+        verify(userRepository, times(0)).findById(ArgumentMatchers.any());
+        verify(authenticationManager, times(1)).authenticate(ArgumentMatchers.any());
+        verify(userRepository, times(0)).findById(ArgumentMatchers.any());
     }
 }

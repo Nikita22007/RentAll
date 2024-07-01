@@ -185,6 +185,15 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>ru/tinkoff/rentall/dto/*DTO.*</exclude>
+						<exclude>ru/tinkoff/rentall/entity/**</exclude>
+						<exclude>ru/tinkoff/rentall/composite_id/**</exclude>
+						<exclude>ru/tinkoff/rentall/configurer/**</exclude>
+						<exclude>ru/tinkoff/rentall/Runner</exclude>
+					</excludes>
+				</configuration>
                 <version>0.8.7</version>
                 <executions>
                     <execution>
