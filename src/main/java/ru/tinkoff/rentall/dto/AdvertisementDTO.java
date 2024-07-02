@@ -16,4 +16,5 @@ public class AdvertisementDTO {
     private int imageId;
     private String categoryName;
     private LocalDateTime creationTime;
+    private Boolean isRented;
 }

@@ -8,3 +8,5 @@ spring:
     change-log: db/changelog/main-changelog.xml
 jwt:
   secretKey: SECRET
+server:
+  port: 8080
