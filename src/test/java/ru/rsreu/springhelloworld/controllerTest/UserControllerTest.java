@@ -58,7 +58,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         AuthService.class,
         JWTUtil.class,
         AuthenticationManager.class,
-
         UserRepository.class,
         PasswordEncoder.class})
 @ExtendWith(SpringExtension.class)
@@ -122,22 +121,6 @@ public class UserControllerTest {
         verify(userRepository, times(1)).save(ArgumentMatchers.any());
         verify(userRepository, times(2)).findById(ArgumentMatchers.any());
         verify(passwordEncoder, times(1)).encode(ArgumentMatchers.any());
-    }
-
-    @Disabled
-    @Test
-    void setUser_alreadyExistingUser() throws Exception {
-        String userJson = objectMapper.writeValueAsString(userDTO);
-
-        Mockito.doReturn(Optional.of(this.user)).when(userRepository).findById(ArgumentMatchers.any());
-        Mockito.doThrow(RuntimeException.class).when(authenticationManager).authenticate(ArgumentMatchers.any());
-        mockMvc.perform(post("/registrate_user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(userJson)).andDo(print())
-                .andExpect(status().is4xxClientError());
-        verify(userRepository, times(1)).findById(ArgumentMatchers.any());
-        verify(userRepository, times(0)).save(ArgumentMatchers.any());
-        verify(passwordEncoder, times(0)).encode(ArgumentMatchers.any());
     }
 
     @Test
