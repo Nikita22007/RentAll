@@ -20,7 +20,9 @@ import ru.tinkoff.rentall.dto.ChatDTO;
 import ru.tinkoff.rentall.entity.Chat;
 import ru.tinkoff.rentall.mapper.ChatMapper;
 import ru.tinkoff.rentall.repository.ChatRepository;
+import ru.tinkoff.rentall.repository.MessageRepository;
 import ru.tinkoff.rentall.service.ChatService;
+import ru.tinkoff.rentall.service.MessageService;
 
 
 import java.nio.charset.StandardCharsets;
@@ -34,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import({ChatController.class, ChatService.class})
+@Import({ChatController.class, ChatService.class, MessageService.class})
 @ExtendWith(SpringExtension.class)
 public class ChatControllerTest {
 
@@ -44,6 +46,9 @@ public class ChatControllerTest {
 
     @MockBean
     private ChatRepository chatRepository;
+
+    @MockBean
+    private MessageRepository messageRepository;
 
     private MockMvc mockMvc;
 
@@ -91,7 +96,7 @@ public class ChatControllerTest {
     }
 
     @Test
-    void sendMessageTest_messageAlreadyExists() throws Exception {
+    void createChat_messageAlreadyExists() throws Exception {
         chatDTO = esr.nextObject(ChatDTO.class);
         Chat chat = ChatMapper.INSTANCE.toChat(chatDTO);
         String chatJson = objectMapper.writeValueAsString(chatDTO);
