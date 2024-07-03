@@ -34,12 +34,12 @@ public class DocumentController {
                 String encodedFileName = URLEncoder.encode(outputNameCleaned, StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
                 String contentDisposition = "attachment; filename=\"" + outputNameCleaned + "\"; filename*=UTF-8''" + encodedFileName;
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition);
-                return ResponseEntity.ok()
+                return ResponseEntity
+                        .ok()
                         .headers(headers)
                         .body(documentBytes);
-            } else {
-                return ResponseEntity.status(400).build();
             }
+            return ResponseEntity.status(400).build();
         } catch (IOException e) {
             return ResponseEntity.status(400).build();
         }

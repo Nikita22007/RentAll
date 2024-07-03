@@ -2,10 +2,12 @@ package ru.tinkoff.rentall.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.tinkoff.rentall.dto.RentHistoryBoardDTO;
 import ru.tinkoff.rentall.dto.RentHistoryDTO;
 import ru.tinkoff.rentall.entity.Advertisement;
 import ru.tinkoff.rentall.entity.RentHistory;
 import ru.tinkoff.rentall.entity.User;
+import ru.tinkoff.rentall.mapper.RentHistoryBoardMapper;
 import ru.tinkoff.rentall.mapper.RentHistoryMapper;
 import ru.tinkoff.rentall.repository.AdvertisementRepository;
 import ru.tinkoff.rentall.repository.RentHistoryRepository;
@@ -32,19 +34,19 @@ public class RentHistoryService {
         return rentHistoryRepository.save(rentHistory);
     }
 
-    public List<RentHistoryDTO> getRentHistoryByUserLogin(String lesseeLogin) {
+    public List<RentHistoryBoardDTO> getRentHistoryByUserLogin(String lesseeLogin) {
         List<RentHistory> rentHistories = rentHistoryRepository.findByUser_Login(lesseeLogin);
         return rentHistories
                 .stream()
-                .map(RentHistoryMapper.INSTANCE::toRentHistoryDTO)
+                .map(RentHistoryBoardMapper.INSTANCE::toRentHistoryBoardDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<RentHistoryDTO> getRentHistoriesByAdvertisementId(int advertisementId) {
+    public List<RentHistoryBoardDTO> getRentHistoriesByAdvertisementId(int advertisementId) {
         List<RentHistory> rentHistories = rentHistoryRepository.findByAdvertisement_AdvId(advertisementId);
         return rentHistories
                 .stream()
-                .map(RentHistoryMapper.INSTANCE::toRentHistoryDTO)
+                .map(RentHistoryBoardMapper.INSTANCE::toRentHistoryBoardDTO)
                 .collect(Collectors.toList());
     }
 }

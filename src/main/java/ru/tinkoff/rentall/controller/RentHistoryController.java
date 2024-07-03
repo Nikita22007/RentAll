@@ -3,7 +3,7 @@ package ru.tinkoff.rentall.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.rentall.dto.AdvertisementReviewDTO;
+import ru.tinkoff.rentall.dto.RentHistoryBoardDTO;
 import ru.tinkoff.rentall.dto.RentHistoryDTO;
 import ru.tinkoff.rentall.service.RentHistoryService;
 
@@ -21,8 +21,8 @@ public class RentHistoryController {
     }
 
     @GetMapping("/rent_history/user/{lesseeLogin}")
-    public ResponseEntity<List<RentHistoryDTO>> getRentHistoriesByUserLogin(@PathVariable String lesseeLogin) {
-        List<RentHistoryDTO> rentHistoryDTOList = rentHistoryService.getRentHistoryByUserLogin(lesseeLogin);
+    public ResponseEntity<List<RentHistoryBoardDTO>> getRentHistoriesByUserLogin(@PathVariable String lesseeLogin) {
+        List<RentHistoryBoardDTO> rentHistoryDTOList = rentHistoryService.getRentHistoryByUserLogin(lesseeLogin);
         if (!rentHistoryDTOList.isEmpty()) {
             return ResponseEntity.status(200).body(rentHistoryDTOList);
         }
@@ -30,8 +30,8 @@ public class RentHistoryController {
     }
 
     @GetMapping("/rent_history/advertisement/{advId}")
-    public ResponseEntity<List<RentHistoryDTO>> getRentHistoriesByAdvertisementId(@PathVariable int advId) {
-        List<RentHistoryDTO> rentHistories = rentHistoryService.getRentHistoriesByAdvertisementId(advId);
+    public ResponseEntity<List<RentHistoryBoardDTO>> getRentHistoriesByAdvertisementId(@PathVariable int advId) {
+        List<RentHistoryBoardDTO> rentHistories = rentHistoryService.getRentHistoriesByAdvertisementId(advId);
         if (rentHistories != null){
             return ResponseEntity.status(200).body(rentHistories);
         }
