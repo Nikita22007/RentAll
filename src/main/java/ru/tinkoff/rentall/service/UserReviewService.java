@@ -9,7 +9,6 @@ import ru.tinkoff.rentall.mapper.UserReviewMapper;
 import ru.tinkoff.rentall.repository.UserRepository;
 import ru.tinkoff.rentall.repository.UserReviewRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,34 +21,35 @@ public class UserReviewService {
 
     public List<UserReviewDTO> getAll() {
         List<UserReview> userReviews = userReviewRepository.findAll();
-        List<UserReviewDTO> userReviewDTOList = new ArrayList<>();
-        for (UserReview userReview : userReviews) {
-            userReviewDTOList.add(UserReviewMapper.INSTANCE.toUserReviewDTO(userReview));
-        }
-        return userReviewDTOList;
+        return userReviews
+                .stream()
+                .map(UserReviewMapper.INSTANCE::toUserReviewDTO)
+                .collect(Collectors.toList());
     }
 
     public List<UserReviewDTO> getUserReviewsByTargetLogin(String targetLogin) {
         List<UserReview> userReviews = userReviewRepository.findByTargetLogin_Login(targetLogin);
-        return userReviews.stream()
+        return userReviews
+                .stream()
                 .map(UserReviewMapper.INSTANCE::toUserReviewDTO)
                 .collect(Collectors.toList());
     }
 
     public List<UserReviewDTO> getUserReviewsByUserLogin(String userLogin) {
         List<UserReview> userReviews = userReviewRepository.findByUserLogin_Login(userLogin);
-        return userReviews.stream()
+        return userReviews
+                .stream()
                 .map(UserReviewMapper.INSTANCE::toUserReviewDTO)
                 .collect(Collectors.toList());
     }
 
     public double getAverageMarkByTargetLogin(String targetLogin) {
         List<UserReview> userReviews = userReviewRepository.findByTargetLogin_Login(targetLogin);
-        double averageMark = userReviews.stream()
+        double averageMark = userReviews
+                .stream()
                 .mapToInt(UserReview::getMark)
                 .average()
                 .orElse(0.0);
-        // Округление до двух знаков после запятой
         return Math.round(averageMark * 100.0) / 100.0;
     }
 

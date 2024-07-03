@@ -7,9 +7,9 @@ import ru.tinkoff.rentall.entity.Category;
 import ru.tinkoff.rentall.mapper.CategoryMapper;
 import ru.tinkoff.rentall.repository.CategoryRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +23,10 @@ public class CategoryService {
 
     public List<CategoryDTO> getAll() {
         List<Category> categories = categoryRepository.findAll();
-        List<CategoryDTO> categoryDTOList = new ArrayList<>();
-        for (Category category : categories) {
-            categoryDTOList.add(CategoryMapper.INSTANCE.toCategoryDTO(category));
-        }
-        return categoryDTOList;
+        return categories
+                .stream()
+                .map(CategoryMapper.INSTANCE::toCategoryDTO)
+                .collect(Collectors.toList());
     }
 
     public Optional<Category> findById(Integer id) {

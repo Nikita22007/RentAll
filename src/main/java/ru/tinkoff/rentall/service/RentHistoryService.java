@@ -34,14 +34,16 @@ public class RentHistoryService {
 
     public List<RentHistoryDTO> getRentHistoryByUserLogin(String lesseeLogin) {
         List<RentHistory> rentHistories = rentHistoryRepository.findByUser_Login(lesseeLogin);
-        return rentHistories.stream()
+        return rentHistories
+                .stream()
                 .map(RentHistoryMapper.INSTANCE::toRentHistoryDTO)
                 .collect(Collectors.toList());
     }
 
     public List<RentHistoryDTO> getRentHistoriesByAdvertisementId(int advertisementId) {
         List<RentHistory> rentHistories = rentHistoryRepository.findByAdvertisement_AdvId(advertisementId);
-        return rentHistories.stream()
+        return rentHistories
+                .stream()
                 .map(RentHistoryMapper.INSTANCE::toRentHistoryDTO)
                 .collect(Collectors.toList());
     }

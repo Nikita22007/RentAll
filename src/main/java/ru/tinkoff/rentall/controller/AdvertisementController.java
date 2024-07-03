@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.rentall.dto.AdBoardDTO;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
-import ru.tinkoff.rentall.dto.AdvertisementReviewDTO;
 import ru.tinkoff.rentall.dto.SearchDTO;
 import ru.tinkoff.rentall.service.AdvertisementService;
 
@@ -32,10 +31,10 @@ public class AdvertisementController {
     }
 
     @GetMapping("/advertisement/user/{user_login}")
-    public ResponseEntity<List<AdvertisementDTO>> getAdvertisement(@PathVariable String user_login) {
-        List<AdvertisementDTO> advertisementsDTO = advertisementService.getAllAdvertisementsByLogin(user_login);
-        if (advertisementsDTO != null) {
-            return ResponseEntity.status(200).body(advertisementsDTO);
+    public ResponseEntity<List<AdBoardDTO>> getAdvertisement(@PathVariable String user_login) {
+        List<AdBoardDTO> adBoardDTOS = advertisementService.getAllAdvertisementsByLogin(user_login);
+        if (adBoardDTOS != null) {
+            return ResponseEntity.status(200).body(adBoardDTOS);
         }
         return ResponseEntity.status(400).build();
     }

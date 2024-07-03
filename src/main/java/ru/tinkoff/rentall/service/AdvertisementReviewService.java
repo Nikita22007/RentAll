@@ -35,7 +35,8 @@ public class AdvertisementReviewService {
 
     public List<AdvertisementReviewDTO> getAll() {
         List<AdvertisementReview> advertisementReviews = advertisementReviewRepository.findAll();
-        return advertisementReviews.stream()
+        return advertisementReviews
+                .stream()
                 .map(AdvertisementReviewMapper.INSTANCE::toAdvertisementReviewDTO)
                 .collect(Collectors.toList());
     }
@@ -46,24 +47,26 @@ public class AdvertisementReviewService {
 
     public List<AdvertisementReviewDTO> getReviewsByAdvertisementId(int advertisementId) {
         List<AdvertisementReview> reviews = advertisementReviewRepository.findByAdvertisement_AdvId(advertisementId);
-        return reviews.stream()
+        return reviews
+                .stream()
                 .map(AdvertisementReviewMapper.INSTANCE::toAdvertisementReviewDTO)
                 .collect(Collectors.toList());
     }
 
     public double getAverageMarkByAdvertisementId(int advertisementId) {
         List<AdvertisementReview> reviews = advertisementReviewRepository.findByAdvertisement_AdvId(advertisementId);
-        double averageMark = reviews.stream()
+        double averageMark = reviews
+                .stream()
                 .mapToInt(AdvertisementReview::getMark)
                 .average()
                 .orElse(0.0);
-        // Округление до двух знаков после запятой
         return Math.round(averageMark * 100.0) / 100.0;
     }
 
     public List<AdvertisementReviewDTO> getReviewsByUserLogin(String userLogin) {
         List<AdvertisementReview> reviews = advertisementReviewRepository.findByUser_Login(userLogin);
-        return reviews.stream()
+        return reviews
+                .stream()
                 .map(AdvertisementReviewMapper.INSTANCE::toAdvertisementReviewDTO)
                 .collect(Collectors.toList());
     }

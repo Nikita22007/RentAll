@@ -6,15 +6,12 @@ import ru.tinkoff.rentall.dto.AdBoardDTO;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
 import ru.tinkoff.rentall.dto.SearchDTO;
 import ru.tinkoff.rentall.entity.Advertisement;
-import ru.tinkoff.rentall.entity.AdvertisementReview;
 import ru.tinkoff.rentall.entity.User;
 import ru.tinkoff.rentall.mapper.AdBoardMapper;
 import ru.tinkoff.rentall.mapper.AdvertisementMapper;
-import ru.tinkoff.rentall.mapper.AdvertisementReviewMapper;
 import ru.tinkoff.rentall.repository.AdvertisementRepository;
 import ru.tinkoff.rentall.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,10 +32,11 @@ public class AdvertisementService {
         return AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisementRepository.findById(id).orElse(null));
     }
 
-    public List<AdvertisementDTO> getAllAdvertisementsByLogin(String userLogin) {
+    public List<AdBoardDTO> getAllAdvertisementsByLogin(String userLogin) {
         List<Advertisement> reviews = advertisementRepository.findByUser_Login(userLogin);
-        return reviews.stream()
-                .map(AdvertisementMapper.INSTANCE::toAdvertisementDTO)
+        return reviews
+                .stream()
+                .map(AdBoardMapper.INSTANCE::toAdBoardDTO)
                 .collect(Collectors.toList());
     }
 
@@ -48,19 +46,17 @@ public class AdvertisementService {
 
     public List<AdBoardDTO> getAdvertisementBoard() {
         List<Advertisement> advertisementBoard = advertisementRepository.findAll();
-        List<AdBoardDTO> adBoard = new ArrayList<>();
-        for (Advertisement advertisement : advertisementBoard) {
-            adBoard.add(AdBoardMapper.INSTANCE.toAdBoardDTO(advertisement));
-        }
-        return adBoard;
+        return advertisementBoard
+                .stream()
+                .map(AdBoardMapper.INSTANCE::toAdBoardDTO)
+                .collect(Collectors.toList());
     }
 
     public List<AdvertisementDTO> search(SearchDTO searchQuery) {
         List<Advertisement> advertisements = advertisementRepository.findBySubstring(searchQuery.getSubstring());
-        List<AdvertisementDTO> searchedAdvertisements = new ArrayList<>();
-        for (Advertisement advertisement : advertisements) {
-            searchedAdvertisements.add(AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisement));
-        }
-        return searchedAdvertisements;
+        return advertisements
+                .stream()
+                .map(AdvertisementMapper.INSTANCE::toAdvertisementDTO)
+                .collect(Collectors.toList());
     }
 }

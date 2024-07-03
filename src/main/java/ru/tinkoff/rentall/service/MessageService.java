@@ -8,8 +8,8 @@ import ru.tinkoff.rentall.entity.Message;
 import ru.tinkoff.rentall.mapper.MessageMapper;
 import ru.tinkoff.rentall.repository.MessageRepository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +23,9 @@ public class MessageService {
 
     public List<MessageDTO> getMessages(ChatDTO chatDTO) {
         List<Message> messages = messageRepository.findByChatId(chatDTO.getChatId());
-        List<MessageDTO> messagesDTO = new ArrayList<>();
-        for (Message message : messages) {
-            messagesDTO.add(MessageMapper.INSTANCE.toMessageDTO(message));
-        }
-        return messagesDTO;
+        return messages
+                .stream()
+                .map((MessageMapper.INSTANCE::toMessageDTO))
+                .collect(Collectors.toList());
     }
 }
