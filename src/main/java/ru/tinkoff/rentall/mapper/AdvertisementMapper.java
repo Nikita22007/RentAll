@@ -11,5 +11,6 @@ public interface AdvertisementMapper {
     AdvertisementMapper INSTANCE = Mappers.getMapper(AdvertisementMapper.class);
     @Mapping(target = "userLogin", source = "advertisement.user.login")
     AdvertisementDTO toAdvertisementDTO(Advertisement advertisement);
+    @Mapping(target = "user.login", source = "userLogin")
     Advertisement toAdvertisement(AdvertisementDTO advertisementDTO);
 }

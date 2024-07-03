@@ -28,8 +28,8 @@ public class AdvertisementService {
         return advertisementRepository.save(advertisement);
     }
 
-    public AdvertisementDTO getAdvertisementById(int id) {
-        return AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisementRepository.findById(id).orElse(null));
+    public Advertisement getAdvertisementById(int id) {
+        return advertisementRepository.findById(id).orElse(null);
     }
 
     public List<AdBoardDTO> getAllAdvertisementsByLogin(String userLogin) {
@@ -40,8 +40,8 @@ public class AdvertisementService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteAdvertisement(AdvertisementDTO advertisementDTO) {
-        advertisementRepository.delete(AdvertisementMapper.INSTANCE.toAdvertisement(advertisementDTO));
+    public void deleteAdvertisement(Advertisement advertisement) {
+        advertisementRepository.delete(advertisement);
     }
 
     public List<AdBoardDTO> getAdvertisementBoard() {

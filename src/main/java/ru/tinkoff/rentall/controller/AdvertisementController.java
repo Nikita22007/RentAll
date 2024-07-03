@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.rentall.dto.AdBoardDTO;
 import ru.tinkoff.rentall.dto.AdvertisementDTO;
 import ru.tinkoff.rentall.dto.SearchDTO;
+import ru.tinkoff.rentall.entity.Advertisement;
+import ru.tinkoff.rentall.mapper.AdvertisementMapper;
 import ru.tinkoff.rentall.service.AdvertisementService;
 
 import java.util.List;
@@ -23,9 +25,9 @@ public class AdvertisementController {
 
     @GetMapping("/advertisement/{adv_id}")
     public ResponseEntity<AdvertisementDTO> getAdvertisement(@PathVariable int adv_id) {
-        AdvertisementDTO advertisementDTO = advertisementService.getAdvertisementById(adv_id);
-        if (advertisementDTO != null) {
-            return ResponseEntity.status(200).body(advertisementDTO);
+        Advertisement advertisement = advertisementService.getAdvertisementById(adv_id);
+        if (advertisement != null) {
+            return ResponseEntity.status(200).body(AdvertisementMapper.INSTANCE.toAdvertisementDTO(advertisement));
         }
         return ResponseEntity.status(400).build();
     }
@@ -49,11 +51,11 @@ public class AdvertisementController {
     }
 
     @DeleteMapping("/delete_advertisement/{adv_id}")
-    public ResponseEntity<AdvertisementDTO> deleteAdvertisement(@PathVariable int adv_id){
-        AdvertisementDTO advertisementDTO = advertisementService.getAdvertisementById(adv_id);
-        if (advertisementDTO != null) {
-            advertisementService.deleteAdvertisement(advertisementDTO);
-            return ResponseEntity.status(200).body(advertisementDTO);
+    public ResponseEntity<Void> deleteAdvertisement(@PathVariable int adv_id){
+        Advertisement advertisement = advertisementService.getAdvertisementById(adv_id);
+        if (advertisement != null) {
+            advertisementService.deleteAdvertisement(advertisement);
+            return ResponseEntity.status(200).build();
         }
         return ResponseEntity.status(400).build();
     }
