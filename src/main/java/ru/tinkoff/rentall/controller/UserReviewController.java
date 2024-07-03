@@ -17,7 +17,10 @@ public class UserReviewController {
     @GetMapping("/user_review")
     public ResponseEntity<List<UserReviewDTO>> getUserReview() {
         List<UserReviewDTO> userReviewDTOList = userReviewService.getAll();
-        return ResponseEntity.status(200).body(userReviewDTOList);
+        if (userReviewDTOList != null) {
+            return ResponseEntity.status(200).body(userReviewDTOList);
+        }
+        return ResponseEntity.status(400).build();
     }
 
     @GetMapping("/user_review/{targetLogin}")

@@ -22,13 +22,19 @@ public class AdvertisementReviewController {
     @GetMapping("/advertisement_review")
     public ResponseEntity<List<AdvertisementReviewDTO>> getAdvertisementReview() {
         List<AdvertisementReviewDTO> advertisementReviewDTOList = advertisementReviewService.getAll();
-        return ResponseEntity.status(200).body(advertisementReviewDTOList);
+        if (advertisementReviewDTOList != null){
+            return ResponseEntity.status(200).body(advertisementReviewDTOList);
+        }
+        return ResponseEntity.status(400).build();
     }
 
     @GetMapping("/advertisement_review/advertisement/{advertisementId}")
     public ResponseEntity<List<AdvertisementReviewDTO>> getReviewsByAdvertisementId(@PathVariable int advertisementId) {
         List<AdvertisementReviewDTO> reviews = advertisementReviewService.getReviewsByAdvertisementId(advertisementId);
-        return ResponseEntity.status(200).body(reviews);
+        if (reviews != null){
+            return ResponseEntity.status(200).body(reviews);
+        }
+        return ResponseEntity.status(400).build();
     }
 
     @GetMapping("/advertisement_review/advertisement/{advertisementId}/average_mark")
@@ -40,7 +46,10 @@ public class AdvertisementReviewController {
     @GetMapping("/advertisement_review/user/{userLogin}")
     public ResponseEntity<List<AdvertisementReviewDTO>> getReviewsByUserLogin(@PathVariable String userLogin) {
         List<AdvertisementReviewDTO> reviews = advertisementReviewService.getReviewsByUserLogin(userLogin);
-        return ResponseEntity.status(200).body(reviews);
+        if (reviews != null){
+            return ResponseEntity.status(200).body(reviews);
+        }
+        return ResponseEntity.status(400).build();
     }
 
 }

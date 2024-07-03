@@ -22,6 +22,9 @@ public class FavoritesController {
     @GetMapping("/favorites/{login}")
     public ResponseEntity<List<FavoritesDTO>> getFavorites(@PathVariable String login) {
         List<FavoritesDTO> favoritesDTOS = favoritesService.getFavorites(login);
-        return ResponseEntity.status(200).body(favoritesDTOS);
+        if (favoritesDTOS != null) {
+            return ResponseEntity.status(200).body(favoritesDTOS);
+        }
+        return ResponseEntity.status(400).build();
     }
 }

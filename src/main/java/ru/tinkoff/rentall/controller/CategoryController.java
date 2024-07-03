@@ -25,7 +25,10 @@ public class CategoryController {
     @GetMapping("/category")
     public ResponseEntity<List<CategoryDTO>> getCategories() {
         List<CategoryDTO> categoryDTOList = categoryService.getAll();
-        return ResponseEntity.status(200).body(categoryDTOList);
+        if (categoryDTOList != null) {
+            return ResponseEntity.status(200).body(categoryDTOList);
+        }
+        return ResponseEntity.status(400).build();
     }
 
 }

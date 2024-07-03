@@ -32,6 +32,9 @@ public class RentHistoryController {
     @GetMapping("/rent_history/advertisement/{advId}")
     public ResponseEntity<List<RentHistoryDTO>> getRentHistoriesByAdvertisementId(@PathVariable int advId) {
         List<RentHistoryDTO> rentHistories = rentHistoryService.getRentHistoriesByAdvertisementId(advId);
-        return ResponseEntity.status(200).body(rentHistories);
+        if (rentHistories != null){
+            return ResponseEntity.status(200).body(rentHistories);
+        }
+        return ResponseEntity.status(404).build();
     }
 }
