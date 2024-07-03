@@ -1,10 +1,12 @@
 package ru.tinkoff.rentall.mapper;
 
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import ru.tinkoff.rentall.dto.UserReviewDTO;
 import ru.tinkoff.rentall.entity.UserReview;
 
+@Mapper(componentModel = "spring")
 public interface UserReviewMapper {
     UserReviewMapper INSTANCE = Mappers.getMapper(UserReviewMapper.class);
 
