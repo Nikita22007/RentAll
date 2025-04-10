@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:${DB_PORT}/rent_all
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: DBADMIN
+    password: DBPASSWORD
   liquibase:
     change-log: db/changelog/main-changelog.xml
 jwt:
