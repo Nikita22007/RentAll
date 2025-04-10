@@ -7,8 +7,8 @@ services:
     depends_on:
       - postgres
     environment:
-      - DB_USERNAME=${USERNAME}
-      - DB_PASSWORD=${PASSWORD}
+      - DB_USERNAME=DBADMIN
+      - DB_PASSWORD=DBPASSWORD
       - DB_PORT=5432
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/rent_all
     ports:
@@ -18,8 +18,8 @@ services:
     image: postgres:13.3
     environment:
       POSTGRES_DB: "rent_all"
-      POSTGRES_USER: ${USERNAME}
-      POSTGRES_PASSWORD: ${PASSWORD}
+      POSTGRES_USER: DBADMIN
+      POSTGRES_PASSWORD: DBPASSWORD
     ports:
       - "5432:5432"
     volumes:
