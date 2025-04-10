@@ -23,7 +23,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - "C:/docker-db-volume:/var/lib/postgresql/data"
+      - "./postgress:/var/lib/postgresql/data"
 
 #  pgadmin
 #  container_name: pgadmin4_container
